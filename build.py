@@ -1,42 +1,19 @@
 from pathlib import Path
+from website.config import BUILD_DIR
+from subprocess import run
+from shutil import copy
+from glob import glob
 
 
-BUILD_DIR = Path("build")
+BUILD_DIR = Path(BUILD_DIR)
 BUILD_DIR.mkdir(exist_ok=True)
-
 with open(BUILD_DIR / ".gitignore", "w") as f:
     f.write("*")
-with open(BUILD_DIR / "index.html", "w") as f:
-    f.write(
-        """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web App</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1>Welcome to My Web App</h1>
-    <p>This is a simple web application built with Python.</p>
-    <script src="app.js"></script>
-</body>
-</html>"""
-    )
-with open(BUILD_DIR / "styles.css", "w") as f:
-    f.write(
-        """body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 20px;
-}
-h1 {
-    color: #333;
-}
-p {
-    color: #666;
-}"""
-    )
-with open(BUILD_DIR / "app.js", "w") as f:
-    f.write("""console.log("Hello, World! This is my web app.");""")
+
+for file in glob("website/static/*"):
+    print(file)
+    copy(file, BUILD_DIR)
+
+for file in glob("pages/*.py"):
+    print(file)
+    run(f"uv run {file}", shell=True, check=True)
