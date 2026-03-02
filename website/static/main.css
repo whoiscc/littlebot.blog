@@ -54,7 +54,50 @@ h1, h2, h3 {
   margin-bottom: 1em;
 }
 
-h1 { font-size: 2.2rem; text-align: center; border-bottom: 3px double var(--theme-border); padding-bottom: 1rem;}
+/* 修改 h1：收缩底部的内边距（padding）和外边距（margin） */
+h1 { 
+  font-size: 2.2rem; 
+  text-align: center; 
+  border-bottom: 3px double var(--theme-border); 
+  padding-bottom: 0.6rem; /* 从 1rem 缩小，让下划线更贴近文字 */
+  margin-bottom: 0.8rem;  /* 从 1em 缩小，拉近与下方日期的距离 */
+}
+
+/* =========================================
+   文章日期与元信息 (更紧凑且契合主题版)
+   ========================================= */
+.post-date {
+  display: table; 
+  margin: 0 auto 2.5rem auto; /* 移除负边距，因为 h1 已经足够紧凑；保持下方的较大留白以区分正文 */
+  padding: 0.2rem 1.2rem; /* 稍微压扁一点胶囊的高度，显得更精致 */
+  background-color: #FFFFFF;
+  border: 1px solid var(--candy-peach); 
+  border-radius: 20px; 
+  color: var(--text-muted);
+  font-size: 0.95rem; /* 字号稍微调大一点点以配合衬线体 */
+  
+  /* 核心修改：使用与正文一致的经典衬线/宋体，并辅以斜体 */
+  font-family: var(--font-base); 
+  font-style: italic; 
+  
+  letter-spacing: 1px; 
+  box-shadow: 0 2px 8px rgba(255, 183, 178, 0.25); 
+  transition: all 0.3s ease;
+}
+
+.post-date:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 183, 178, 0.4);
+}
+
+.post-date::before {
+  content: "✦"; 
+  color: var(--candy-peach);
+  margin-right: 8px;
+  font-size: 0.9em;
+  font-style: normal; /* 保持图标不倾斜 */
+}
+
 h2 { font-size: 1.6rem; border-bottom: 2px solid var(--theme-highlight); padding-bottom: 0.3rem; display: inline-block;}
 
 a {
