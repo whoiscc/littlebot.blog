@@ -54,13 +54,12 @@ h1, h2, h3 {
   margin-bottom: 1em;
 }
 
-/* 修改 h1：收缩底部的内边距（padding）和外边距（margin） */
 h1 { 
   font-size: 2.2rem; 
   text-align: center; 
-  border-bottom: 3px double var(--theme-border); 
-  padding-bottom: 0.6rem; /* 从 1rem 缩小，让下划线更贴近文字 */
-  margin-bottom: 0.8rem;  /* 从 1em 缩小，拉近与下方日期的距离 */
+  /* 移除了 border-bottom */
+  padding-bottom: 0; 
+  margin-bottom: 0.8rem;
 }
 
 /* =========================================
@@ -68,20 +67,18 @@ h1 {
    ========================================= */
 .post-date {
   display: table; 
-  margin: 0 auto 2.5rem auto; /* 移除负边距，因为 h1 已经足够紧凑；保持下方的较大留白以区分正文 */
-  padding: 0.2rem 1.2rem; /* 稍微压扁一点胶囊的高度，显得更精致 */
+  margin: 0 auto 2.5rem auto; 
+  padding: 0.2rem 1.2rem; 
   background-color: #FFFFFF;
-  border: 1px solid var(--candy-peach); 
+  border: none; /* 移除了边框 */
   border-radius: 20px; 
   color: var(--text-muted);
-  font-size: 0.95rem; /* 字号稍微调大一点点以配合衬线体 */
-  
-  /* 核心修改：使用与正文一致的经典衬线/宋体，并辅以斜体 */
+  font-size: 0.95rem; 
   font-family: var(--font-base); 
   font-style: italic; 
-  
   letter-spacing: 1px; 
-  box-shadow: 0 2px 8px rgba(255, 183, 178, 0.25); 
+  /* 依靠微弱的阴影勾勒边缘 */
+  box-shadow: 0 2px 10px rgba(255, 183, 178, 0.2); 
   transition: all 0.3s ease;
 }
 
@@ -218,28 +215,26 @@ a:hover {
    ========================================= */
 .monologue-block {
   position: relative;
-  /* 使用纯白，与主页面的亮灰白 --bg-color 形成微弱的层级感 */
-  background-color: #FFFFFF; 
-  /* 使用薰衣草紫作为柔和的边界 */
-  border: 1px dashed var(--candy-lavender); 
+  /* 使用带有极高透明度的薰衣草紫作为底色，代替原来的白底+虚线 */
+  background-color: rgba(199, 206, 234, 0.15); 
+  border: none; /* 移除了虚线边框 */
   border-radius: 8px;
   padding: 1.2rem 1.5rem;
   margin: 1.8rem 0;
-  /* 吐槽通常“音量”较小，使用稍浅的辅助色并轻微缩小字号 */
   color: var(--text-muted); 
   font-size: 0.95em;
-  /* 核心：极其微弱的内阴影，营造出“代码块”那种凹陷的物理质感 */
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02); 
+  /* 取消内阴影，让色块显得更轻盈 */
+  box-shadow: none; 
 }
 
-/* 右上角的小图标，暗示这是内心戏 */
+/* 右上角的小图标可以适当调淡一点，契合无边框的轻盈感 */
 .monologue-block::before {
   content: "💭"; 
   position: absolute;
   top: 10px;
   right: 15px;
   font-size: 1.2em;
-  opacity: 0.5; /* 降低透明度，避免喧宾夺主 */
+  opacity: 0.3; 
 }
 
 /* 保证块内段落排版紧凑，去除多余留白 */
