@@ -14,6 +14,6 @@ for file in glob("website/static/*"):
     print(file)
     copy(file, BUILD_DIR)
 
-for file in glob("pages/*.py"):
+for file in glob("pages/**/*.py", recursive=True):
     print(file)
     run(f"uv run {file}", shell=True, check=True)
