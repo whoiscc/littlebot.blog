@@ -1,3 +1,6 @@
+/* 将这行代码放在 style.css 的第一行 */
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.1.0/style.css");
+
 /* =========================================
    全局变量与糖果色预设
    ========================================= */
@@ -12,14 +15,14 @@
   --candy-melon: #FFDAC1;
   --candy-mint: #E2F0CB;
   --candy-aqua: #B5EAD7;
-  --candy-lavender:#C7CEEA;
+  --candy-lavender: #C7CEEA;
 
   --theme-primary: var(--candy-pink);
   --theme-highlight: var(--candy-mint);
   --theme-border: var(--candy-lavender);
 
   --font-base: "Georgia", "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, SimSun, serif;
-  --font-kaiti: "Georgia", "Kaiti SC", "Noto Serif CJK SC", STKaiti, KaiTi, serif;
+  --font-kaiti: "Georgia", "Kaiti SC", STKaiti, KaiTi, "LXGW WenKai Lite", serif;
 }
 
 /* =========================================
@@ -35,9 +38,9 @@ body {
   padding: 0;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  
+
   /* 初始化页边注计数器 */
-  counter-reset: sidenote-counter; 
+  counter-reset: sidenote-counter;
 }
 
 .container {
@@ -47,18 +50,20 @@ body {
   padding-left: 20px;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: bold;
   color: var(--text-main);
   margin-top: 1.5em;
   margin-bottom: 1em;
 }
 
-h1 { 
-  font-size: 2.2rem; 
-  text-align: center; 
+h1 {
+  font-size: 2.2rem;
+  text-align: center;
   /* 移除了 border-bottom */
-  padding-bottom: 0; 
+  padding-bottom: 0;
   margin-bottom: 0.8rem;
 }
 
@@ -66,19 +71,20 @@ h1 {
    文章日期与元信息 (更紧凑且契合主题版)
    ========================================= */
 .post-date {
-  display: table; 
-  margin: 0 auto 2.5rem auto; 
-  padding: 0.2rem 1.2rem; 
+  display: table;
+  margin: 0 auto 2.5rem auto;
+  padding: 0.2rem 1.2rem;
   background-color: #FFFFFF;
-  border: none; /* 移除了边框 */
-  border-radius: 20px; 
+  border: none;
+  /* 移除了边框 */
+  border-radius: 20px;
   color: var(--text-muted);
-  font-size: 0.95rem; 
-  font-family: var(--font-base); 
-  font-style: italic; 
-  letter-spacing: 1px; 
+  font-size: 0.95rem;
+  font-family: var(--font-base);
+  font-style: italic;
+  letter-spacing: 1px;
   /* 依靠微弱的阴影勾勒边缘 */
-  box-shadow: 0 2px 10px rgba(255, 183, 178, 0.2); 
+  box-shadow: 0 2px 10px rgba(255, 183, 178, 0.2);
   transition: all 0.3s ease;
 }
 
@@ -88,14 +94,20 @@ h1 {
 }
 
 .post-date::before {
-  content: "✦"; 
+  content: "✦";
   color: var(--candy-peach);
   margin-right: 8px;
   font-size: 0.9em;
-  font-style: normal; /* 保持图标不倾斜 */
+  font-style: normal;
+  /* 保持图标不倾斜 */
 }
 
-h2 { font-size: 1.6rem; border-bottom: 2px solid var(--theme-highlight); padding-bottom: 0.3rem; display: inline-block;}
+h2 {
+  font-size: 1.6rem;
+  border-bottom: 2px solid var(--theme-highlight);
+  padding-bottom: 0.3rem;
+  display: inline-block;
+}
 
 a {
   color: var(--theme-primary);
@@ -109,7 +121,8 @@ a:hover {
   color: var(--text-main);
 }
 
-.kaiti, em {
+.kaiti,
+em {
   font-family: var(--font-kaiti);
   font-style: normal;
   color: var(--theme-primary);
@@ -135,7 +148,8 @@ a:hover {
   color: var(--theme-primary);
   vertical-align: super;
   font-size: 0.8em;
-  margin: 0 1px; /* 极致压缩左右留白 */
+  margin: 0 1px;
+  /* 极致压缩左右留白 */
   font-family: sans-serif;
   font-weight: bold;
   transition: opacity 0.2s ease;
@@ -169,12 +183,14 @@ a:hover {
 
 /* 页边注内容前面的序号 */
 .sidenote::before {
-  content: counter(sidenote-counter) " "; /* 纯数字加一个空格 */
+  content: counter(sidenote-counter) " ";
+  /* 纯数字加一个空格 */
   color: var(--theme-primary);
   font-size: 1em;
   font-weight: bold;
   font-family: sans-serif;
-  margin-right: 4px; /* 缩小侧边栏编号与文本的间距 */
+  margin-right: 4px;
+  /* 缩小侧边栏编号与文本的间距 */
 }
 
 /* =========================================
@@ -193,7 +209,7 @@ a:hover {
   }
 
   /* 点击带有编号的 label 后，显示页边注为内联块 */
-  .margin-toggle:checked ~ .sidenote {
+  .margin-toggle:checked~.sidenote {
     display: block;
     float: none;
     margin: 1rem 0;
@@ -216,25 +232,26 @@ a:hover {
 .monologue-block {
   position: relative;
   /* 使用带有极高透明度的薰衣草紫作为底色，代替原来的白底+虚线 */
-  background-color: rgba(199, 206, 234, 0.15); 
-  border: none; /* 移除了虚线边框 */
+  background-color: rgba(199, 206, 234, 0.15);
+  border: none;
+  /* 移除了虚线边框 */
   border-radius: 8px;
   padding: 1.2rem 1.5rem;
   margin: 1.8rem 0;
-  color: var(--text-muted); 
+  color: var(--text-muted);
   font-size: 0.95em;
   /* 取消内阴影，让色块显得更轻盈 */
-  box-shadow: none; 
+  box-shadow: none;
 }
 
 /* 右上角的小图标可以适当调淡一点，契合无边框的轻盈感 */
 .monologue-block::before {
-  content: "💭"; 
+  content: "💭";
   position: absolute;
   top: 10px;
   right: 15px;
   font-size: 1.2em;
-  opacity: 0.3; 
+  opacity: 0.3;
 }
 
 /* 保证块内段落排版紧凑，去除多余留白 */
@@ -242,6 +259,6 @@ a:hover {
   margin: 0;
 }
 
-.monologue-block p + p {
+.monologue-block p+p {
   margin-top: 0.8em;
 }
