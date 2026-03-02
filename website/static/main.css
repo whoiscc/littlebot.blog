@@ -169,3 +169,41 @@ a:hover {
     color: var(--text-main);
   }
 }
+
+/* =========================================
+   吐槽 / 内心戏文字块 (Monologue Block)
+   ========================================= */
+.monologue-block {
+  position: relative;
+  /* 使用纯白，与主页面的亮灰白 --bg-color 形成微弱的层级感 */
+  background-color: #FFFFFF; 
+  /* 使用薰衣草紫作为柔和的边界 */
+  border: 1px dashed var(--candy-lavender); 
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  margin: 1.8rem 0;
+  /* 吐槽通常“音量”较小，使用稍浅的辅助色并轻微缩小字号 */
+  color: var(--text-muted); 
+  font-size: 0.95em;
+  /* 核心：极其微弱的内阴影，营造出“代码块”那种凹陷的物理质感 */
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02); 
+}
+
+/* 右上角的小图标，暗示这是内心戏 */
+.monologue-block::before {
+  content: "💭"; 
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.2em;
+  opacity: 0.5; /* 降低透明度，避免喧宾夺主 */
+}
+
+/* 保证块内段落排版紧凑，去除多余留白 */
+.monologue-block p {
+  margin: 0;
+}
+
+.monologue-block p + p {
+  margin-top: 0.8em;
+}

@@ -1,20 +1,44 @@
+from website import render
+
+
 class Paragraph:
-    def __init__(self, content):
-        self.content = content
+    def __init__(self, *items):
+        self.items = items
 
     def render(self):
-        return f"<p>{self.content}</p>"
+        content = "".join(render(item) for item in self.items)
+        return f"<p>{content}</p>"
+
 
 class SideNote:
     count = 0
 
-    def __init__(self, content):
-        self.content = content
+    def __init__(self, *items):
+        self.items = items
 
     def render(self):
         SideNote.count += 1
+        content = "".join(render(item) for item in self.items)
         return f"""<span class="sidenote-wrapper">
         <label for="sn-{SideNote.count}" class="margin-toggle-label"></label>
         <input type="checkbox" id="sn-{SideNote.count}" class="margin-toggle">
-        <span class="sidenote">{self.content}</span>
+        <span class="sidenote">{content}</span>
 </span>"""
+
+
+class Emphasize:
+    def __init__(self, *items):
+        self.items = items
+
+    def render(self):
+        content = "".join(render(item) for item in self.items)
+        return f"<em>{content}</em>"
+
+
+class Monologue:
+    def __init__(self, *items):
+        self.items = items
+
+    def render(self):
+        content = "".join(render(item) for item in self.items)
+        return f"<div class='monologue-block'>{content}</div>"
