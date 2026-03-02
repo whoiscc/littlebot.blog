@@ -130,10 +130,9 @@ em {
 }
 
 /* =========================================
-   页边注 (纯数字紧凑版)
+   页边注 (统一柔和色块版)
    ========================================= */
 .sidenote-wrapper {
-  display: inline;
   counter-increment: sidenote-counter;
 }
 
@@ -143,13 +142,8 @@ em {
 
 /* 正文中的引用序号（极简纯数字） */
 .margin-toggle-label {
-  display: inline;
   cursor: pointer;
   color: var(--theme-primary);
-  vertical-align: super;
-  font-size: 0.8em;
-  margin: 0 1px;
-  /* 极致压缩左右留白 */
   font-family: sans-serif;
   font-weight: bold;
   transition: opacity 0.2s ease;
@@ -165,7 +159,9 @@ em {
   content: counter(sidenote-counter);
 }
 
-/* 桌面端页边注样式 */
+/* =========================================
+   统一风格的悬浮卡片式页边注 (基础与桌面端)
+   ========================================= */
 .sidenote {
   float: right;
   clear: right;
@@ -176,25 +172,34 @@ em {
   font-size: 0.85rem;
   line-height: 1.6;
   color: var(--text-muted);
-  border-left: 3px solid var(--candy-aqua);
-  padding-left: 10px;
-  background-color: transparent;
+
+  /* 统一视觉核心：纯白底色 + 柔和圆角 + 糖果色光晕阴影 */
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 18px;
+  box-sizing: border-box;
+  /* 使用薄荷绿/水蓝色的柔和阴影，呼应主题且替代边框 */
+  box-shadow: 0 4px 20px rgba(181, 234, 215, 0.4);
 }
 
-/* 页边注内容前面的序号 */
+/* 页边注里的序号样式 */
 .sidenote::before {
-  content: counter(sidenote-counter) " ";
-  /* 纯数字加一个空格 */
+  content: counter(sidenote-counter) ".";
   color: var(--theme-primary);
-  font-size: 1em;
+  font-size: 1.1em;
   font-weight: bold;
   font-family: sans-serif;
-  margin-right: 4px;
-  /* 缩小侧边栏编号与文本的间距 */
+  margin-right: 6px;
+}
+
+/* 隐藏移动端遮罩层 */
+.sidenote-backdrop {
+  display: none;
 }
 
 /* =========================================
-   移动设备适配 (响应式)
+   移动设备适配 (移动端底部卡片抽屉)
    ========================================= */
 @media (max-width: 1050px) {
   .container {
@@ -203,58 +208,110 @@ em {
     max-width: 90%;
   }
 
-  /* 移动端默认隐藏页边注文本 */
   .sidenote {
     display: none;
   }
 
-  /* 点击带有编号的 label 后，显示页边注为内联块 */
+  /* 点击后，背景遮罩层出现 */
+  .margin-toggle:checked~.sidenote-backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(250, 250, 250, 0.8);
+    /* 改用极其干净的亮色半透明遮罩，取代沉闷的黑底 */
+    backdrop-filter: blur(2px);
+    /* 如果设备支持，增加微微的毛玻璃效果 */
+    z-index: 998;
+    cursor: pointer;
+    animation: fadeInBackdrop 0.3s ease forwards;
+  }
+
+  @keyframes fadeInBackdrop {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* 点击后，底部抽屉卡片出现 */
   .margin-toggle:checked~.sidenote {
     display: block;
-    float: none;
-    margin: 1rem 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    border-left: none;
-    border-top: 3px solid var(--candy-aqua);
-    padding-left: 0;
-    padding-top: 10px;
-    background-color: var(--candy-mint);
-    border-radius: 0 0 5px 5px;
-    padding: 15px;
-    box-sizing: border-box;
-    color: var(--text-main);
+    margin: 0;
+    float: none;
+    z-index: 999;
+
+    /* 继承白底风格，仅修改为适配底部抽屉的上圆角 */
+    border-radius: 20px 20px 0 0;
+    padding: 30px 20px 40px 20px;
+    /* 增加一点内边距，让呼吸感更好 */
+
+    /* 将阴影改为朝上的糖果色光晕 */
+    box-shadow: 0 -4px 25px rgba(181, 234, 215, 0.5);
+
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes slideUp {
+    0% {
+      transform: translateY(100%);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
   }
 }
 
 /* =========================================
-   吐槽 / 内心戏文字块 (Monologue Block)
+   吐槽 / 内心戏文字块 (统一悬浮卡片版)
    ========================================= */
 .monologue-block {
   position: relative;
-  /* 使用带有极高透明度的薰衣草紫作为底色，代替原来的白底+虚线 */
-  background-color: rgba(199, 206, 234, 0.15);
+  /* 统一视觉核心：纯白底色 + 柔和圆角 */
+  background-color: #FFFFFF;
   border: none;
-  /* 移除了虚线边框 */
-  border-radius: 8px;
-  padding: 1.2rem 1.5rem;
-  margin: 1.8rem 0;
+  border-radius: 12px;
+  /* 与页边注完全一致的 12px 圆角 */
+  padding: 1.5rem 1.8rem;
+  margin: 2rem 0;
   color: var(--text-muted);
   font-size: 0.95em;
-  /* 取消内阴影，让色块显得更轻盈 */
-  box-shadow: none;
+
+  /* 使用薰衣草紫作为专属的卡片阴影发光色 */
+  box-shadow: 0 4px 20px rgba(199, 206, 234, 0.4);
+
+  /* 增加极其微弱的悬浮交互感 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* 右上角的小图标可以适当调淡一点，契合无边框的轻盈感 */
+/* 鼠标划过时，卡片微微浮起，光晕变大 */
+.monologue-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(199, 206, 234, 0.5);
+}
+
+/* 右上角的小图标 */
 .monologue-block::before {
   content: "💭";
   position: absolute;
-  top: 10px;
-  right: 15px;
+  top: 15px;
+  right: 18px;
   font-size: 1.2em;
-  opacity: 0.3;
+  opacity: 0.4;
+  /* 在白底上稍微调高一点透明度以保证可见性 */
 }
 
-/* 保证块内段落排版紧凑，去除多余留白 */
+/* 保证块内段落排版紧凑 */
 .monologue-block p {
   margin: 0;
 }

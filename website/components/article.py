@@ -19,11 +19,12 @@ class SideNote:
     def render(self):
         SideNote.count += 1
         content = "".join(render(item) for item in self.items)
-        return f"""<span class="sidenote-wrapper">
-        <label for="sn-{SideNote.count}" class="margin-toggle-label"></label>
-        <input type="checkbox" id="sn-{SideNote.count}" class="margin-toggle">
-        <span class="sidenote">{content}</span>
-</span>"""
+        return f"""<span class="sidenote-wrapper">\
+<sup><label for="sn-{SideNote.count}" class="margin-toggle-label"></label></sup>\
+<input type="checkbox" id="sn-{SideNote.count}" class="margin-toggle">\
+<label for="sn-{SideNote.count}" class="sidenote-backdrop"></label>\
+<span class="sidenote">{content}</span>\
+</span> """  # space here to easily separate consecutive sidenotes
 
 
 class Emphasize:
