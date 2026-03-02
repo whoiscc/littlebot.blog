@@ -1,0 +1,171 @@
+/* =========================================
+   全局变量与糖果色预设
+   ========================================= */
+:root {
+  --bg-color: #FAFAFA;
+  --text-main: #2C2C2C;
+  --text-muted: #757575;
+
+  /* 糖果色系 / 马卡龙色系预设 */
+  --candy-pink: #FF9AA2;
+  --candy-peach: #FFB7B2;
+  --candy-melon: #FFDAC1;
+  --candy-mint: #E2F0CB;
+  --candy-aqua: #B5EAD7;
+  --candy-lavender:#C7CEEA;
+
+  --theme-primary: var(--candy-pink);
+  --theme-highlight: var(--candy-mint);
+  --theme-border: var(--candy-lavender);
+
+  --font-base: "Georgia", "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, SimSun, serif;
+  --font-kaiti: "Georgia", "Kaiti SC", "Noto Serif CJK SC", STKaiti, KaiTi, serif;
+}
+
+/* =========================================
+   基础排版与计数器初始化
+   ========================================= */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-base);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  
+  /* 初始化页边注计数器 */
+  counter-reset: sidenote-counter; 
+}
+
+.container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding-right: 250px;
+  padding-left: 20px;
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+  color: var(--text-main);
+  margin-top: 2.5em;
+  margin-bottom: 1em;
+}
+
+h1 { font-size: 2.2rem; text-align: center; border-bottom: 3px double var(--theme-border); padding-bottom: 1rem;}
+h2 { font-size: 1.6rem; border-bottom: 2px solid var(--theme-highlight); padding-bottom: 0.3rem; display: inline-block;}
+
+a {
+  color: var(--theme-primary);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--theme-primary);
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  background-color: var(--candy-melon);
+  color: var(--text-main);
+}
+
+.kaiti, em {
+  font-family: var(--font-kaiti);
+  font-style: normal;
+  color: var(--theme-primary);
+  font-size: 1.1em;
+}
+
+/* =========================================
+   页边注 (纯数字紧凑版)
+   ========================================= */
+.sidenote-wrapper {
+  display: inline;
+  counter-increment: sidenote-counter;
+}
+
+.margin-toggle {
+  display: none;
+}
+
+/* 正文中的引用序号（极简纯数字） */
+.margin-toggle-label {
+  display: inline;
+  cursor: pointer;
+  color: var(--theme-primary);
+  vertical-align: super;
+  font-size: 0.8em;
+  margin: 0 1px; /* 极致压缩左右留白 */
+  font-family: sans-serif;
+  font-weight: bold;
+  transition: opacity 0.2s ease;
+}
+
+/* 鼠标悬停时稍微变透明，保留最基础的交互感 */
+.margin-toggle-label:hover {
+  opacity: 0.7;
+}
+
+/* 仅填入纯数字，没有任何修饰 */
+.margin-toggle-label::after {
+  content: counter(sidenote-counter);
+}
+
+/* 桌面端页边注样式 */
+.sidenote {
+  float: right;
+  clear: right;
+  margin-right: -300px;
+  width: 260px;
+  margin-top: 0.3rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  border-left: 3px solid var(--candy-aqua);
+  padding-left: 10px;
+  background-color: transparent;
+}
+
+/* 页边注内容前面的序号 */
+.sidenote::before {
+  content: counter(sidenote-counter) " "; /* 纯数字加一个空格 */
+  color: var(--theme-primary);
+  font-size: 1em;
+  font-weight: bold;
+  font-family: sans-serif;
+  margin-right: 4px; /* 缩小侧边栏编号与文本的间距 */
+}
+
+/* =========================================
+   移动设备适配 (响应式)
+   ========================================= */
+@media (max-width: 1050px) {
+  .container {
+    padding-right: 20px;
+    padding-left: 20px;
+    max-width: 90%;
+  }
+
+  /* 移动端默认隐藏页边注文本 */
+  .sidenote {
+    display: none;
+  }
+
+  /* 点击带有编号的 label 后，显示页边注为内联块 */
+  .margin-toggle:checked ~ .sidenote {
+    display: block;
+    float: none;
+    margin: 1rem 0;
+    width: 100%;
+    border-left: none;
+    border-top: 3px solid var(--candy-aqua);
+    padding-left: 0;
+    padding-top: 10px;
+    background-color: var(--candy-mint);
+    border-radius: 0 0 5px 5px;
+    padding: 15px;
+    box-sizing: border-box;
+    color: var(--text-main);
+  }
+}

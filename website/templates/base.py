@@ -11,6 +11,8 @@ class Page:
 <html lang="zh-CN">
 {self.head.render()}
 <body>
+    <div class="container">
     {self.content}
+    </div>
 </body>
 </html>"""
