@@ -6,6 +6,8 @@
    ========================================= */
 :root {
   --bg-color: #FAFAFA;
+  --bg-color-rgb: 250, 250, 250; /* 提取RGB用于透明度计算 */
+  --card-bg: #FFFFFF;            /* 统一的卡片背景色 */
   --text-main: #2C2C2C;
   --text-muted: #757575;
 
@@ -15,7 +17,9 @@
   --candy-melon: #FFDAC1;
   --candy-mint: #E2F0CB;
   --candy-aqua: #B5EAD7;
+  --candy-aqua-rgb: 181, 234, 215;     /* 提取水蓝色RGB用于阴影 */
   --candy-lavender: #C7CEEA;
+  --candy-lavender-rgb: 199, 206, 234; /* 提取薰衣草紫RGB用于阴影 */
 
   --theme-primary: var(--candy-pink);
   --theme-highlight: var(--candy-mint);
@@ -23,6 +27,8 @@
 
   --font-base: "Georgia", "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, SimSun, serif;
   --font-kaiti: "Georgia", "Kaiti SC", STKaiti, KaiTi, "LXGW WenKai Lite", serif;
+  /* 新增：等宽字体栈，用于数字和代码的整齐对齐 */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 /* =========================================
@@ -35,7 +41,6 @@ body {
   font-size: 1.125rem;
   line-height: 1.8;
   margin: 0;
-  padding: 0;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 
@@ -53,7 +58,6 @@ body {
 h1,
 h2,
 h3 {
-  font-weight: bold;
   color: var(--text-main);
   margin-top: 1.5em;
   margin-bottom: 1em;
@@ -63,7 +67,6 @@ h1 {
   font-size: 2.2rem;
   text-align: center;
   /* 移除了 border-bottom */
-  padding-bottom: 0;
   margin-bottom: 0.8rem;
 }
 
@@ -73,31 +76,25 @@ h1 {
 .post-date {
   display: table;
   margin: 0 auto 2.5rem auto;
-  padding: 0.2rem 1.2rem;
-  background-color: #FFFFFF;
-  border: none;
-  /* 移除了边框 */
-  border-radius: 20px;
+  /* 移除了背景色、阴影和多余内边距，减轻重量感 */
   color: var(--text-muted);
-  font-size: 0.95rem;
-  font-family: var(--font-base);
+  font-size: 0.9rem;
+  font-family: var(--font-mono); /* 替换为等宽字体 */
   font-style: italic;
   letter-spacing: 1px;
-  /* 依靠微弱的阴影勾勒边缘 */
-  box-shadow: 0 2px 10px rgba(255, 183, 178, 0.2);
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .post-date:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 183, 178, 0.4);
+  /* 悬停时仅改变颜色，不再使用浮动和阴影 */
+  color: var(--theme-primary);
 }
 
 .post-date::before {
   content: "✦";
   color: var(--candy-peach);
   margin-right: 8px;
-  font-size: 0.9em;
+  font-size: 1.2em; /* 增大了图标字号 */
   font-style: normal;
   /* 保持图标不倾斜 */
 }
@@ -144,7 +141,7 @@ em {
 .margin-toggle-label {
   cursor: pointer;
   color: var(--theme-primary);
-  font-family: sans-serif;
+  font-family: var(--font-mono); /* 引用序号也可以统一为等宽数字 */
   font-weight: bold;
   transition: opacity 0.2s ease;
 }
@@ -173,14 +170,13 @@ em {
   line-height: 1.6;
   color: var(--text-muted);
 
-  /* 统一视觉核心：纯白底色 + 柔和圆角 + 糖果色光晕阴影 */
-  background-color: #FFFFFF;
-  border: none;
+  /* 统一视觉核心：使用变量定义的卡片底色 + 柔和圆角 + 糖果色光晕阴影 */
+  background-color: var(--card-bg);
   border-radius: 12px;
   padding: 15px 18px;
   box-sizing: border-box;
-  /* 使用薄荷绿/水蓝色的柔和阴影，呼应主题且替代边框 */
-  box-shadow: 0 4px 20px rgba(181, 234, 215, 0.4);
+  /* 使用薄荷绿/水蓝色的柔和阴影，通过 RGB 变量控制透明度 */
+  box-shadow: 0 4px 20px rgba(var(--candy-aqua-rgb), 0.4);
 }
 
 /* 页边注里的序号样式 */
@@ -189,7 +185,7 @@ em {
   color: var(--theme-primary);
   font-size: 1.1em;
   font-weight: bold;
-  font-family: sans-serif;
+  font-family: var(--font-mono); /* 统一使用等宽字体 */
   margin-right: 6px;
 }
 
@@ -220,8 +216,8 @@ em {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(250, 250, 250, 0.8);
-    /* 改用极其干净的亮色半透明遮罩，取代沉闷的黑底 */
+    background-color: rgba(var(--bg-color-rgb), 0.8);
+    /* 改用极简的亮色半透明遮罩，取代沉闷的黑底 */
     backdrop-filter: blur(2px);
     /* 如果设备支持，增加微微的毛玻璃效果 */
     z-index: 998;
@@ -247,7 +243,6 @@ em {
     left: 0;
     width: 100%;
     margin: 0;
-    float: none;
     z-index: 999;
 
     /* 继承白底风格，仅修改为适配底部抽屉的上圆角 */
@@ -256,7 +251,7 @@ em {
     /* 增加一点内边距，让呼吸感更好 */
 
     /* 将阴影改为朝上的糖果色光晕 */
-    box-shadow: 0 -4px 25px rgba(181, 234, 215, 0.5);
+    box-shadow: 0 -4px 25px rgba(var(--candy-aqua-rgb), 0.5);
 
     animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
@@ -277,9 +272,8 @@ em {
    ========================================= */
 .monologue-block {
   position: relative;
-  /* 统一视觉核心：纯白底色 + 柔和圆角 */
-  background-color: #FFFFFF;
-  border: none;
+  /* 统一视觉核心：使用变量定义的卡片底色 + 柔和圆角 */
+  background-color: var(--card-bg);
   border-radius: 12px;
   /* 与页边注完全一致的 12px 圆角 */
   padding: 1.5rem 1.8rem;
@@ -288,7 +282,7 @@ em {
   font-size: 0.95em;
 
   /* 使用薰衣草紫作为专属的卡片阴影发光色 */
-  box-shadow: 0 4px 20px rgba(199, 206, 234, 0.4);
+  box-shadow: 0 4px 20px rgba(var(--candy-lavender-rgb), 0.4);
 
   /* 增加极其微弱的悬浮交互感 */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -297,7 +291,7 @@ em {
 /* 鼠标划过时，卡片微微浮起，光晕变大 */
 .monologue-block:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(199, 206, 234, 0.5);
+  box-shadow: 0 6px 25px rgba(var(--candy-lavender-rgb), 0.5);
 }
 
 /* 右上角的小图标 */
@@ -318,4 +312,48 @@ em {
 
 .monologue-block p+p {
   margin-top: 0.8em;
+}
+
+/* =========================================
+   页脚 (构建时间、开源协议等)
+   ========================================= */
+.site-footer {
+  position: relative;
+  margin-top: 3rem;         /* 缩小顶部外边距 */
+  padding: 1.5rem 0 1rem 0; /* 缩小内边距 */
+  text-align: center;
+  font-size: 0.85rem;
+  font-family: var(--font-mono); /* 使用等宽字体以对齐数字和英文 */
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+/* 用伪元素实现一条短分割线，确保比正文窄且居中 */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30%;
+  max-width: 150px;
+  border-top: 1px dashed var(--theme-border);
+}
+
+.site-footer p {
+  margin: 0.3rem 0;
+}
+
+.site-footer a {
+  /* 弱化页脚链接的初始颜色，保持和文字一致 */
+  color: var(--text-muted);
+  border-bottom: 1px dashed var(--text-muted);
+  transition: all 0.3s ease;
+}
+
+.site-footer a:hover {
+  /* 悬停时去掉背景色填充，仅改变文字和下划线颜色为主题色 */
+  background-color: transparent;
+  color: var(--theme-primary);
+  border-bottom-color: var(--theme-primary);
 }

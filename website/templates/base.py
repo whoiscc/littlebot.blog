@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from website.components import Head
 
 
@@ -14,5 +15,6 @@ class Page:
     <div class="container">
     {self.content}
     </div>
+    <footer class="site-footer">构建于{datetime.now(tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")}</footer>
 </body>
 </html>"""
