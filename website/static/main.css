@@ -276,6 +276,97 @@ a:hover {
 }
 
 /* =========================================
+   代码块与语法高亮 (Candy Theme 适配版)
+   ========================================= */
+/* 行内代码 */
+:not(pre) > code {
+  font-family: var(--font-mono);
+  /* 使用浅色薄荷绿作为行内代码的背景，保持文字深色以保证可读性 */
+  background-color: rgba(var(--candy-mint-rgb, 226, 240, 203), 0.5);
+  color: #D95A66; /* 加深的糖果粉色，作为行内强调 */
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+/* 代码块容器 */
+pre {
+  font-family: var(--font-mono);
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  color: var(--text-main);
+  font-size: 0.9em;
+  line-height: 1.6;
+  /* 类似吐槽块的柔和薰衣草紫光晕阴影，外加一条极细的边框 */
+  box-shadow: 0 4px 15px rgba(var(--candy-lavender-rgb), 0.2);
+  border: 1px solid rgba(var(--candy-lavender-rgb), 0.4);
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* 基于 Prism.js 的糖果主题语法高亮 (明亮高饱和硬糖版) */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #B2BEC3; /* 清透的浅灰蓝色 */
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: #A4B0BE;
+}
+
+/* 关键字 (Python: def, import, class, if, return...) */
+.token.keyword,
+.token.tag,
+.token.operator {
+  color: #FF477E; /* 极其明亮的火烈鸟粉 */
+  font-weight: bold;
+}
+
+/* 字符串 (Python: "hello world") */
+.token.string,
+.token.attr-value {
+  color: #00CEC9; /* 明亮的蒂芙尼青/水绿色 */
+}
+
+/* 函数与类名 (Python: print(), MyClass) */
+.token.function,
+.token.class-name {
+  color: #9D65FF; /* 亮眼的葡萄紫 */
+  font-weight: bold;
+}
+
+/* 数字与布尔值 (Python: 123, True, False) */
+.token.number,
+.token.boolean,
+.token.constant,
+.token.symbol {
+  color: #FFA502; /* 鲜艳的甜橙色 */
+}
+
+/* 属性、变量、内置对象 */
+.token.property,
+.token.variable,
+.token.builtin {
+  color: #48DBFB; /* 清亮的马卡龙蓝 */
+}
+
+/* 装饰器 (Python: @staticmethod) */
+.token.meta {
+  color: #1DD1A1; /* 荧光薄荷绿 */
+}
+
+/* =========================================
    页脚
    ========================================= */
 .site-footer {
