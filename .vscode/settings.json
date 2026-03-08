@@ -1,3 +1,7 @@
 {
-    "liveServer.settings.root": "/build"
+    "liveServer.settings.root": "/build",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "black-formatter.cwd": "${fileDirname}"
 }
