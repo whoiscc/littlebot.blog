@@ -28,5 +28,11 @@ def build():
         copy(file, build_dir)
 
     for file in glob("pages/**/*.py", recursive=True):
+        if file == "pages/index.py":
+            continue
         print(file)
         run(f"uv run {file}", shell=True, check=True)
+
+    if Path("pages/index.py").exists():
+        print("pages/index.py")
+        run(f"uv run pages/index.py", shell=True, check=True)

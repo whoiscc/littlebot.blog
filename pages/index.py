@@ -1,19 +1,18 @@
-from website.templates.base import Page
+from glob import glob
+from pathlib import Path
+
 from website.config import BUILD_DIR
+from website.fs import write_page
+from website.templates.base import Page
 
-content = """<h1>全体目光向我看齐，我宣布个事</h1>
-<p>等下把featured博客挂在这里。</p>
-
-<p>
-    在撰写博客时，我们经常需要添加补充说明。传统的脚注需要跳转到页面底部，而页边注则直接显示在旁边
-    <span class="sidenote-wrapper">
-        <label for="sn-1" class="margin-toggle-label"></label>
-        <input type="checkbox" id="sn-1" class="margin-toggle">
-        <span class="sidenote">这是一个页边注。在宽屏下，它会安静地呆在右侧的空白处；在手机上，您可以点击十字星标展开它。</span>
-    </span>
-    。这种设计能够极大地保持阅读的流畅性。
-</p>
+content = """<div class="site-logo"><img src="/logo.png" alt="Little Bot's Blog"></div>
+<h1>Little Bot's Blog</h1>
+<h2 style="margin-top: 0;">人是预测机器，偶尔许愿</h2>
 """
-page = Page("Little Bot Blog", content)
-with open(f"{BUILD_DIR}/index.html", "w") as f:
-    f.write(page.render())
+for page in glob(f"{BUILD_DIR}/**/index.html", recursive=True):
+    path = Path(page).parent.relative_to(BUILD_DIR)
+    if path == Path("."):
+        continue
+    content += f"""<p><a href="{path}/">{path}</a></p>"""
+page = Page("Little Bot's Blog", content)
+write_page(".", page.render())
