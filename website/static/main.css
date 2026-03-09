@@ -6,34 +6,49 @@
    全局变量与糖果色预设
    ========================================= */
 :root {
-  --bg-color: #FAFAFA;
-  --bg-color-rgb: 250, 250, 250; /* 提取RGB用于透明度计算 */
-  --card-bg: #FFFFFF;            /* 统一的卡片背景色 */
+  --bg-color-rgb: 250, 250, 250; 
+  --bg-color: rgb(var(--bg-color-rgb));
+  --card-bg: #FFFFFF;            
   --text-main: #2C2C2C;
   --text-muted: #757575;
 
-  /* 糖果色系 / 马卡龙色系预设 */
-  --candy-pink: #FF9AA2;
-  --candy-peach: #FFB7B2;
-  --candy-melon: #FFDAC1;
-  --candy-mint: #E2F0CB;
-  --candy-aqua: #B5EAD7;
-  --candy-aqua-rgb: 181, 234, 215;     /* 提取水蓝色RGB用于阴影 */
-  --candy-lavender: #C7CEEA;
-  --candy-lavender-rgb: 199, 206, 234; /* 提取薰衣草紫RGB用于阴影 */
+  /* 糖果色系 / 马卡龙色系预设及其 RGB 分量 (单一数据源派生) */
+  --candy-pink-rgb: 255, 154, 162;
+  --candy-pink: rgb(var(--candy-pink-rgb));
+  
+  --candy-peach-rgb: 255, 183, 178;
+  --candy-peach: rgb(var(--candy-peach-rgb));
+  
+  --candy-melon-rgb: 255, 218, 193;
+  --candy-melon: rgb(var(--candy-melon-rgb));
+  
+  --candy-mint-rgb: 226, 240, 203;
+  --candy-mint: rgb(var(--candy-mint-rgb));
+  
+  --candy-aqua-rgb: 181, 234, 215;
+  --candy-aqua: rgb(var(--candy-aqua-rgb));
+  
+  --candy-lavender-rgb: 199, 206, 234; 
+  --candy-lavender: rgb(var(--candy-lavender-rgb));
 
+  /* 功能色调映射 */
   --theme-primary: var(--candy-pink);
   --theme-highlight: var(--candy-mint);
   --theme-border: var(--candy-lavender);
 
+  /* 统一结构变量 (Design System 规范) */
+  --card-radius: 12px;
+  --card-padding: 1.2rem 1.5rem;
+  --card-shadow-base: 0 4px 20px;
+  --card-shadow-hover: 0 6px 25px;
+  --transition-standard: all 0.3s ease;
+  --transition-card: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+
   /* 标准正文字体栈 */
   --font-base: "Georgia", "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, SimSun, serif;
   
-  /* 优化后的楷体字体栈：
-     1. 优先匹配系统本地楷体（Mac/iOS: Kaiti SC, Windows: KaiTi）
-     2. 安卓等无本地楷体的系统会 fallback 到网络请求的 "FZKai-Z03"（方正楷体）。它血统纯正，且被分片处理，体积极小。
-  */
-  --font-kaiti: "Georgia", "Kaiti SC", "STKaiti", "KaiTi", "Microsoft KaiTi", "FZKai-Z03", serif;
+  /* 替换后的替代字体栈 (--font-alt) */
+  --font-alt: "Hoefler Text", Baskerville, "Palatino Linotype", Palatino, Georgia, "Times New Roman", "Kaiti SC", "STKaiti", "KaiTi", "Microsoft KaiTi", "FZKai-Z03", serif;
   
   /* 等宽字体栈 */
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -51,8 +66,6 @@ body {
   margin: 0;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-
-  /* 初始化页边注计数器 */
   counter-reset: sidenote-counter;
 }
 
@@ -75,61 +88,58 @@ h1 {
   margin-bottom: 0.8rem;
 }
 
-/* =========================================
-   文章日期与元信息
-   ========================================= */
-.post-date {
-  display: table;
-  margin: 0 auto 2.5rem auto;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  font-family: var(--font-mono);
-  font-style: italic;
-  letter-spacing: 1px;
-  transition: color 0.3s ease;
-}
-
-.post-date:hover {
-  color: var(--theme-primary);
-}
-
-.post-date::before {
-  content: "✦";
-  color: var(--candy-peach);
-  margin-right: 8px;
-  font-size: 1.2em;
-  font-style: normal;
-}
-
 h2 {
   font-size: 1.6rem;
-  border-bottom: 2px solid var(--theme-highlight);
+  /* 使用 Peach 分配给次级标题的下划线修饰 */
+  border-bottom: 2px solid var(--candy-peach);
   padding-bottom: 0.3rem;
   display: inline-block;
 }
 
+/* =========================================
+   链接与强调文本
+   ========================================= */
 a {
   color: var(--theme-primary);
   text-decoration: none;
   border-bottom: 1px dashed var(--theme-primary);
-  transition: all 0.3s ease;
+  transition: var(--transition-standard);
 }
 
 a:hover {
   background-color: var(--candy-melon);
   color: var(--text-main);
+  border-bottom-color: transparent;
 }
 
-.kaiti, em {
-  font-family: var(--font-kaiti);
-  font-style: normal;
+em {
+  font-family: var(--font-alt);
+  font-style: italic;
+  font-synthesis: weight; 
   color: var(--theme-primary);
-  /* 恢复标准 1.1em 字号以适配正统楷体 */
   font-size: 1.1em;
 }
 
 /* =========================================
-   页边注 (统一柔和色块版)
+   统一卡片基础结构 (代码块、页边注、内心戏)
+   ========================================= */
+.sidenote, .monologue-block, pre {
+  background-color: var(--card-bg);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+  box-sizing: border-box;
+  transition: var(--transition-card);
+  position: relative;
+  color: var(--text-muted);
+}
+
+/* 所有的交互卡片统一悬浮浮动效果 */
+.sidenote:hover, .monologue-block:hover, pre:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   页边注 (分配色系: Aqua 水蓝色)
    ========================================= */
 .sidenote-wrapper {
   counter-increment: sidenote-counter;
@@ -144,7 +154,7 @@ a:hover {
   color: var(--theme-primary);
   font-family: var(--font-mono);
   font-weight: bold;
-  transition: opacity 0.2s ease;
+  transition: var(--transition-standard);
 }
 
 .margin-toggle-label:hover {
@@ -164,12 +174,15 @@ a:hover {
   margin-bottom: 1rem;
   font-size: 0.85rem;
   line-height: 1.6;
-  color: var(--text-muted);
-  background-color: var(--card-bg);
-  border-radius: 12px;
-  padding: 15px 18px;
-  box-sizing: border-box;
-  box-shadow: 0 4px 20px rgba(var(--candy-aqua-rgb), 0.4);
+  
+  /* Aqua 专属发光与边框 */
+  border: 1px solid rgba(var(--candy-aqua-rgb), 0.4);
+  box-shadow: var(--card-shadow-base) rgba(var(--candy-aqua-rgb), 0.2);
+}
+
+.sidenote:hover {
+  border-color: rgba(var(--candy-aqua-rgb), 0.8);
+  box-shadow: var(--card-shadow-hover) rgba(var(--candy-aqua-rgb), 0.4);
 }
 
 .sidenote::before {
@@ -186,7 +199,7 @@ a:hover {
 }
 
 /* =========================================
-   移动设备适配
+   移动设备适配 (页边注抽屉)
    ========================================= */
 @media (max-width: 1050px) {
   .container {
@@ -226,10 +239,18 @@ a:hover {
     width: 100%;
     margin: 0;
     z-index: 999;
+    /* 覆盖标准圆角，使用抽屉上圆角 */
     border-radius: 20px 20px 0 0;
     padding: 30px 20px 40px 20px;
+    border: none;
+    border-top: 1px solid rgba(var(--candy-aqua-rgb), 0.6);
     box-shadow: 0 -4px 25px rgba(var(--candy-aqua-rgb), 0.5);
     animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  /* 禁用移动端的悬浮位移以防止抽屉错位 */
+  .margin-toggle:checked~.sidenote:hover {
+    transform: none;
   }
 
   @keyframes slideUp {
@@ -239,23 +260,20 @@ a:hover {
 }
 
 /* =========================================
-   吐槽 / 内心戏文字块
+   吐槽 / 内心戏文字块 (分配色系: Lavender 薰衣草紫)
    ========================================= */
 .monologue-block {
-  position: relative;
-  background-color: var(--card-bg);
-  border-radius: 12px;
-  padding: 1.5rem 1.8rem;
   margin: 2rem 0;
-  color: var(--text-muted);
   font-size: 0.95em;
-  box-shadow: 0 4px 20px rgba(var(--candy-lavender-rgb), 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  /* Lavender 专属发光与边框 */
+  border: 1px solid rgba(var(--candy-lavender-rgb), 0.4);
+  box-shadow: var(--card-shadow-base) rgba(var(--candy-lavender-rgb), 0.2);
 }
 
 .monologue-block:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(var(--candy-lavender-rgb), 0.5);
+  border-color: rgba(var(--candy-lavender-rgb), 0.8);
+  box-shadow: var(--card-shadow-hover) rgba(var(--candy-lavender-rgb), 0.4);
 }
 
 .monologue-block::before {
@@ -276,14 +294,13 @@ a:hover {
 }
 
 /* =========================================
-   代码块与语法高亮 (Candy Theme 适配版)
+   代码块与语法高亮 (分配色系: Mint 薄荷绿)
    ========================================= */
 /* 行内代码 */
 :not(pre) > code {
   font-family: var(--font-mono);
-  /* 使用浅色薄荷绿作为行内代码的背景，保持文字深色以保证可读性 */
-  background-color: rgba(var(--candy-mint-rgb, 226, 240, 203), 0.5);
-  color: #D95A66; /* 加深的糖果粉色，作为行内强调 */
+  background-color: rgba(var(--candy-mint-rgb), 0.5);
+  color: #D95A66; 
   padding: 0.2em 0.4em;
   border-radius: 4px;
   font-size: 0.85em;
@@ -292,17 +309,20 @@ a:hover {
 /* 代码块容器 */
 pre {
   font-family: var(--font-mono);
-  background-color: var(--card-bg);
-  border-radius: 12px;
-  padding: 1.2rem 1.5rem;
   margin: 1.5rem 0;
   overflow-x: auto;
   color: var(--text-main);
   font-size: 0.9em;
   line-height: 1.6;
-  /* 类似吐槽块的柔和薰衣草紫光晕阴影，外加一条极细的边框 */
-  box-shadow: 0 4px 15px rgba(var(--candy-lavender-rgb), 0.2);
-  border: 1px solid rgba(var(--candy-lavender-rgb), 0.4);
+  
+  /* Mint 专属发光与边框 */
+  border: 1px solid rgba(var(--candy-mint-rgb), 0.5);
+  box-shadow: var(--card-shadow-base) rgba(var(--candy-mint-rgb), 0.2);
+}
+
+pre:hover {
+  border-color: rgba(var(--candy-mint-rgb), 0.9);
+  box-shadow: var(--card-shadow-hover) rgba(var(--candy-mint-rgb), 0.4);
 }
 
 pre code {
@@ -313,62 +333,54 @@ pre code {
 }
 
 /* 基于 Prism.js 的糖果主题语法高亮 (明亮高饱和硬糖版) */
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-  color: #B2BEC3; /* 清透的浅灰蓝色 */
+.token.comment, .token.prolog, .token.doctype, .token.cdata {
+  color: #B2BEC3; 
   font-style: italic;
 }
-
-.token.punctuation {
-  color: #A4B0BE;
-}
-
-/* 关键字 (Python: def, import, class, if, return...) */
-.token.keyword,
-.token.tag,
-.token.operator {
-  color: #FF477E; /* 极其明亮的火烈鸟粉 */
+.token.punctuation { color: #A4B0BE; }
+.token.keyword, .token.tag, .token.operator {
+  color: #FF477E; 
   font-weight: bold;
 }
-
-/* 字符串 (Python: "hello world") */
-.token.string,
-.token.attr-value {
-  color: #00CEC9; /* 明亮的蒂芙尼青/水绿色 */
-}
-
-/* 函数与类名 (Python: print(), MyClass) */
-.token.function,
-.token.class-name {
-  color: #9D65FF; /* 亮眼的葡萄紫 */
+.token.string, .token.attr-value { color: #00CEC9; }
+.token.function, .token.class-name {
+  color: #9D65FF; 
   font-weight: bold;
 }
-
-/* 数字与布尔值 (Python: 123, True, False) */
-.token.number,
-.token.boolean,
-.token.constant,
-.token.symbol {
-  color: #FFA502; /* 鲜艳的甜橙色 */
+.token.number, .token.boolean, .token.constant, .token.symbol {
+  color: #FFA502; 
 }
-
-/* 属性、变量、内置对象 */
-.token.property,
-.token.variable,
-.token.builtin {
-  color: #48DBFB; /* 清亮的马卡龙蓝 */
+.token.property, .token.variable, .token.builtin {
+  color: #48DBFB; 
 }
-
-/* 装饰器 (Python: @staticmethod) */
-.token.meta {
-  color: #1DD1A1; /* 荧光薄荷绿 */
-}
+.token.meta { color: #1DD1A1; }
 
 /* =========================================
-   页脚
+   文章日期、元信息与页脚 (分配色系: Peach 桃色)
    ========================================= */
+.post-date {
+  display: table;
+  margin: 0 auto 2.5rem auto;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  font-style: italic;
+  letter-spacing: 1px;
+  transition: var(--transition-standard);
+}
+
+.post-date:hover {
+  color: var(--theme-primary);
+}
+
+.post-date::before {
+  content: "✦";
+  color: var(--candy-peach);
+  margin-right: 8px;
+  font-size: 1.2em;
+  font-style: normal;
+}
+
 .site-footer {
   position: relative;
   margin-top: 3rem;
@@ -388,7 +400,8 @@ pre code {
   transform: translateX(-50%);
   width: 30%;
   max-width: 150px;
-  border-top: 1px dashed var(--theme-border);
+  /* 页脚分割线统一使用薰衣草紫或桃色，这里匹配柔和的边界 */
+  border-top: 1px dashed rgba(var(--candy-peach-rgb), 0.8);
 }
 
 .site-footer p {
@@ -398,7 +411,7 @@ pre code {
 .site-footer a {
   color: var(--text-muted);
   border-bottom: 1px dashed var(--text-muted);
-  transition: all 0.3s ease;
+  transition: var(--transition-standard);
 }
 
 .site-footer a:hover {
