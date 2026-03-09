@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from website.components import Code, CodeBlock, Hyperlink, Monologue, Paragraph, SideNote
@@ -6,7 +7,7 @@ from website.fs import write_page
 from website.templates.article import PageStage
 
 
-title = "静态网站生成器已死"
+title = Path(__file__).stem
 date = datetime(2026, 3, 8, tzinfo=ZoneInfo("Asia/Singapore"))
 s = PageStage(title, date)
 with Paragraph.of(s):
@@ -18,7 +19,7 @@ with Paragraph.of(s):
     s += "还真不是。", "以下是这个页面源码的开始部分"
 with CodeBlock.of(s, "python"):
     with open(__file__) as f:
-        s += "".join(f.readlines()[9:21])
+        s += "".join(f.readlines()[9:22])
 with Paragraph.of(s):
     s += "这是一个自给自足的脚本：运行这个脚本就会输出这个页面的源码。"
     s += "你可以把它想象成一个巨大的", Code("print"), "调用，只是引入了通用的组件库并用了一些花哨的语法来省去反复手写一些HTML元素的麻烦，提高脚本的信息密度。"
