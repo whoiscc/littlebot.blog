@@ -12,7 +12,7 @@ content = """<div class="site-logo"><img src="/logo.png" alt="Little Bot's Blog"
 """
 for page in glob(f"{BUILD_DIR}/**/index.html", recursive=True):
     path = Path(page).parent.relative_to(BUILD_DIR)
-    if path == Path("."):
+    if not path.is_relative_to("articles"):
         continue
     content += f"""<p><a href="{path}/">{path}</a></p>"""
 page = Page("Little Bot's Blog", content)
