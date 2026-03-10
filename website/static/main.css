@@ -5,29 +5,29 @@
    全局变量与糖果色预设
    ========================================= */
 :root {
-  --bg-color-rgb: 250, 250, 250; 
+  --bg-color-rgb: 250, 250, 250;
   --bg-color: rgb(var(--bg-color-rgb));
-  --card-bg: #FFFFFF;            
+  --card-bg: #FFFFFF;
   --text-main: #2C2C2C;
-  --text-muted: #666666; 
+  --text-muted: #666666;
 
   /* 糖果色系 / 马卡龙色系预设及其 RGB 分量 */
-  --candy-pink-rgb: 255, 107, 129;    
+  --candy-pink-rgb: 255, 107, 129;
   --candy-pink: rgb(var(--candy-pink-rgb));
-  
-  --candy-peach-rgb: 255, 165, 2;     
+
+  --candy-peach-rgb: 255, 165, 2;
   --candy-peach: rgb(var(--candy-peach-rgb));
-  
+
   --candy-melon-rgb: 255, 218, 193;
   --candy-melon: rgb(var(--candy-melon-rgb));
-  
-  --candy-mint-rgb: 46, 213, 115;     
+
+  --candy-mint-rgb: 46, 213, 115;
   --candy-mint: rgb(var(--candy-mint-rgb));
-  
-  --candy-aqua-rgb: 27, 163, 156;     
+
+  --candy-aqua-rgb: 27, 163, 156;
   --candy-aqua: rgb(var(--candy-aqua-rgb));
-  
-  --candy-lavender-rgb: 162, 155, 254; 
+
+  --candy-lavender-rgb: 162, 155, 254;
   --candy-lavender: rgb(var(--candy-lavender-rgb));
 
   /* 功能色调映射 */
@@ -36,7 +36,7 @@
   --theme-border: var(--candy-lavender);
 
   /* 统一结构变量 (Design System 规范 - 面性微光与侧边线) */
-  --card-radius: 6px 16px 16px 6px; 
+  --card-radius: 6px 16px 16px 6px;
   --card-padding: 1.2rem 1.5rem;
   --transition-standard: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
@@ -54,7 +54,7 @@ body {
   color: var(--text-main);
   font-family: var(--font-base);
   font-size: 1.125rem;
-  line-height: 1.85; 
+  line-height: 1.85;
   margin: 0;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -65,11 +65,14 @@ body {
   max-width: 720px;
   margin: 3rem auto;
   /* 增加 padding-top 解决 margin 塌陷，统一顶部留白 */
-  padding: 2rem 250px 2rem 20px; 
-  position: relative; /* 为 Logo 的绝对定位提供锚点 */
+  padding: 2rem 250px 2rem 20px;
+  position: relative;
+  /* 为 Logo 的绝对定位提供锚点 */
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: var(--text-main);
   margin-top: 2em;
   margin-bottom: 1em;
@@ -79,13 +82,13 @@ h1, h2, h3 {
 /* 标题靠左，并提高层级 */
 h1 {
   font-size: 2.4rem;
-  text-align: left; 
-  margin-top: 0; 
+  text-align: left;
+  margin-top: 0;
   margin-bottom: 1.2rem;
-  letter-spacing: 1px; 
+  letter-spacing: 1px;
   position: relative;
-  z-index: 2; 
-  width: fit-content; 
+  z-index: 2;
+  width: fit-content;
 }
 
 h2 {
@@ -111,37 +114,37 @@ h2::after {
    全局导航 / 网站 Logo (视觉为底层水印，物理为顶层交互)
    ========================================= */
 .site-logo {
-  position: absolute; 
-  top: 2.5rem; 
-  right: 240px; 
+  position: absolute;
+  top: 2.5rem;
+  right: 240px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0; 
+  margin: 0;
   text-decoration: none;
   border: none;
   background-color: transparent;
   color: var(--text-main);
   transition: var(--transition-standard);
-  
+
   /* 核心修复：物理层级提到最高，保证任何情况下都不会被文字挡住鼠标 */
-  z-index: 10; 
-  opacity: 0.15; 
-  
+  z-index: 10;
+  opacity: 0.15;
+
   /* 视觉魔法：正片叠底。这会让粉色水印在遇到黑色文字时透出黑色，
      视觉上完美伪装成“沉在底层”的底纹，绝对不影响深色文字的阅读 */
-  mix-blend-mode: multiply; 
+  mix-blend-mode: multiply;
 }
 
-.site-logo svg, 
+.site-logo svg,
 .site-logo img {
   width: auto;
   height: auto;
-  max-width: 140px;  
+  max-width: 140px;
   max-height: 140px;
   margin-bottom: 0.5rem;
-  fill: currentColor; 
+  fill: currentColor;
 }
 
 .site-logo span {
@@ -154,13 +157,14 @@ h2::after {
 
 /* 悬停时提亮并浮出 */
 .site-logo:hover {
-  background-color: transparent; 
-  transform: translateY(-3px); 
-  color: var(--theme-primary); 
+  background-color: transparent;
+  transform: translateY(-3px);
+  color: var(--theme-primary);
   opacity: 0.9;
   /* 悬停时取消叠底混合，让 Logo 的原色完全覆盖文字跃然而出 */
-  mix-blend-mode: normal; 
+  mix-blend-mode: normal;
 }
+
 .site-logo:hover span {
   color: var(--theme-primary);
 }
@@ -171,16 +175,16 @@ h2::after {
 .post-date {
   display: flex;
   align-items: center;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   gap: 8px;
-  margin: 0 0 4rem 0; 
+  margin: 0 0 4rem 0;
   color: var(--text-muted);
   font-size: 0.9rem;
   font-family: var(--font-mono);
   font-style: italic;
   letter-spacing: 0.5px;
   position: relative;
-  z-index: 2; 
+  z-index: 2;
   width: fit-content;
 }
 
@@ -206,10 +210,10 @@ a:hover {
   border-bottom-color: var(--theme-primary);
 }
 
-em, .kaiti {
+em {
   font-family: var(--font-alt);
   font-style: italic;
-  font-synthesis: weight; 
+  font-synthesis: weight;
   color: var(--theme-primary);
   font-size: 1.1em;
 }
@@ -254,18 +258,18 @@ em, .kaiti {
   line-height: 1.6;
   color: var(--text-muted);
   box-sizing: border-box;
-  
-  background-color: rgba(var(--candy-aqua-rgb), 0.08); 
-  border-left: 3px solid var(--candy-aqua);          
+
+  background-color: rgba(var(--candy-aqua-rgb), 0.08);
+  border-left: 3px solid var(--candy-aqua);
   border-radius: var(--card-radius);
   padding: 1rem 1.2rem;
-  
+
   transition: var(--transition-standard);
 }
 
 .sidenote:hover {
   background-color: rgba(var(--candy-aqua-rgb), 0.12);
-  transform: translateX(4px); 
+  transform: translateX(4px);
 }
 
 .sidenote::before {
@@ -291,9 +295,9 @@ em, .kaiti {
   }
 
   .site-logo {
-    right: 15px; 
+    right: 15px;
     top: 2.5rem;
-    opacity: 0.1; 
+    opacity: 0.1;
   }
 
   .site-logo svg,
@@ -321,8 +325,13 @@ em, .kaiti {
   }
 
   @keyframes fadeInBackdrop {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
   }
 
   .margin-toggle:checked~.sidenote {
@@ -333,23 +342,28 @@ em, .kaiti {
     width: 100%;
     margin: 0;
     z-index: 999;
-    
+
     background-color: #FFFFFF;
     border-radius: 24px 24px 0 0;
     border-left: none;
     border-top: 4px solid var(--candy-aqua);
     padding: 30px 20px 40px 20px;
-    box-shadow: 0 -10px 40px rgba(0,0,0, 0.08); 
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.08);
     animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
-  
+
   .margin-toggle:checked~.sidenote:hover {
     transform: none;
   }
 
   @keyframes slideUp {
-    0% { transform: translateY(100%); }
-    100% { transform: translateY(0); }
+    0% {
+      transform: translateY(100%);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
   }
 }
 
@@ -367,7 +381,7 @@ em, .kaiti {
   border-left: 4px solid var(--candy-lavender);
   border-radius: var(--card-radius);
   padding: 1.5rem 1.8rem;
-  
+
   transition: var(--transition-standard);
 }
 
@@ -383,7 +397,7 @@ em, .kaiti {
   right: 18px;
   font-size: 1.2em;
   opacity: 0.5;
-  filter: grayscale(100%); 
+  filter: grayscale(100%);
 }
 
 .monologue-block p {
@@ -399,10 +413,10 @@ em, .kaiti {
    统一设计系统，完全融入页面
    ========================================= */
 /* 行内代码 */
-:not(pre) > code {
+:not(pre)>code {
   font-family: var(--font-mono);
-  background-color: rgba(var(--candy-pink-rgb), 0.08); 
-  color: #D81B60;  
+  background-color: rgba(var(--candy-pink-rgb), 0.08);
+  color: #D81B60;
   padding: 0.2em 0.4em;
   border-radius: 4px;
   font-size: 0.85em;
@@ -412,10 +426,10 @@ em, .kaiti {
 /* 代码块容器 */
 pre {
   font-family: var(--font-mono);
-  background-color: rgba(var(--candy-mint-rgb), 0.08); 
-  border: none; 
-  border-left: 4px solid var(--candy-mint); 
-  border-radius: var(--card-radius); 
+  background-color: rgba(var(--candy-mint-rgb), 0.08);
+  border: none;
+  border-left: 4px solid var(--candy-mint);
+  border-radius: var(--card-radius);
   padding: 1.5rem 1.8rem;
   margin: 2.5rem 0;
   overflow-x: auto;
@@ -428,7 +442,7 @@ pre {
 
 pre:hover {
   background-color: rgba(var(--candy-mint-rgb), 0.12);
-  transform: translateX(4px); 
+  transform: translateX(4px);
 }
 
 pre code {
@@ -440,27 +454,135 @@ pre code {
 }
 
 /* 基于 Prism.js 的语法高亮 (在淡色底上做了对比度深化校准) */
-.token.comment, .token.prolog, .token.doctype, .token.cdata {
-  color: #ADB5BD; 
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #ADB5BD;
   font-style: italic;
 }
-.token.punctuation { color: #868E96; }
-.token.keyword, .token.tag, .token.operator {
-  color: #E83E8C; 
+
+.token.punctuation {
+  color: #868E96;
+}
+
+.token.keyword,
+.token.tag,
+.token.operator {
+  color: #E83E8C;
   font-weight: bold;
 }
-.token.string, .token.attr-value { color: #00A896; } 
-.token.function, .token.class-name {
-  color: #6F42C1; 
+
+.token.string,
+.token.attr-value {
+  color: #00A896;
+}
+
+.token.function,
+.token.class-name {
+  color: #6F42C1;
   font-weight: bold;
 }
-.token.number, .token.boolean, .token.constant, .token.symbol {
-  color: #FD7E14; 
+
+.token.number,
+.token.boolean,
+.token.constant,
+.token.symbol {
+  color: #FD7E14;
 }
-.token.property, .token.variable, .token.builtin {
-  color: #17A2B8; 
+
+.token.property,
+.token.variable,
+.token.builtin {
+  color: #17A2B8;
 }
-.token.meta { color: #20C997; }
+
+.token.meta {
+  color: #20C997;
+}
+
+/* =========================================
+   搜索框 (分配色系: Lavender 默认 -> Aqua 输入与就绪状态)
+   ========================================= */
+.search-wrapper {
+  position: relative;
+  margin: 2.5rem 0;
+  /* 严格限制与文章段落等宽 */
+  width: 100%;
+  z-index: 5;
+}
+
+#search-input {
+  width: 100%;
+  /* 紧凑高度，在视觉上等同一行文字 */
+  height: 2.6rem;
+  padding: 0 1rem;
+  font-family: var(--font-base);
+  font-size: 1.05rem;
+  color: var(--text-main);
+  /* 与正文协调的卡片底色与边框 */
+  background-color: rgba(var(--candy-lavender-rgb), 0.05);
+  border: 1px solid rgba(var(--candy-lavender-rgb), 0.4);
+  border-radius: 8px;
+  /* 柔和且对称的圆角 */
+  box-sizing: border-box;
+  transition: var(--transition-standard);
+  outline: none;
+}
+
+#search-input::placeholder {
+  color: #ADB5BD;
+  font-family: var(--font-alt);
+}
+
+/* 聚焦状态，适度强化外框边缘 */
+#search-input:focus {
+  background-color: var(--card-bg);
+  border-color: var(--candy-lavender);
+  box-shadow: 0 4px 15px rgba(var(--candy-lavender-rgb), 0.15);
+}
+
+/* =========================================
+   搜索框内有文字时的样式类 (.is-typing)
+   作用于输入框本身，触发强调交互
+   ========================================= */
+#search-input.is-typing {
+  /* 切换为代表“行动/就绪”的水鸭蓝色 (Aqua) */
+  border-color: var(--candy-aqua);
+  background-color: rgba(var(--candy-aqua-rgb), 0.08);
+  color: var(--text-main);
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(var(--candy-aqua-rgb), 0.15);
+  padding-right: 120px;
+  /* 提前为右侧即将出现的提示文字留出空间，防止重叠 */
+}
+
+/* 视觉魔法：利用现代 CSS :has() 监听子元素状态，在 wrapper 上渲染伪元素 */
+.search-wrapper:has(#search-input.is-typing)::after {
+  content: "↵ Enter 搜索";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--candy-aqua);
+  pointer-events: none;
+  /* 防止遮挡右侧输入区域的点击 */
+  animation: fadeInPrompt 0.3s ease forwards;
+}
+
+@keyframes fadeInPrompt {
+  0% {
+    opacity: 0;
+    transform: translate(10px, -50%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
 
 /* =========================================
    页脚
@@ -482,11 +604,13 @@ pre code {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 40px; 
+  width: 40px;
   border-top: 2px solid rgba(var(--candy-lavender-rgb), 0.5);
 }
 
-.site-footer p { margin: 0.3rem 0; }
+.site-footer p {
+  margin: 0.3rem 0;
+}
 
 .site-footer a {
   color: var(--text-muted);
