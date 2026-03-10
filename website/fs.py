@@ -12,9 +12,9 @@ def write_page(path, content):
         path = path / "index.html"
     build_path = BUILD_DIR / path
     build_path.parent.mkdir(parents=True, exist_ok=True)
-    print(f"  -> {build_path}")
     with open(build_path, "w") as f:
         f.write(content)
+    print(f"  -> {build_path}")
 
 
 def build():
@@ -26,13 +26,14 @@ def build():
     for file in glob("website/static/*"):
         print(file)
         copy(file, build_dir)
+        print(f"  -> {build_dir}/{Path(file).name}")
 
-    for file in glob("pages/**/*.py", recursive=True):
-        if file == "pages/index.py":
-            continue
+    for file in glob("pages/articles/**/*.py", recursive=True):
         print(file)
         run(f"uv run {file}", shell=True, check=True)
 
-    if Path("pages/index.py").exists():
-        print("pages/index.py")
-        run(f"uv run pages/index.py", shell=True, check=True)
+    for file in glob("pages/**/*.py", recursive=True):
+        if file.startswith("pages/articles/"):
+            continue
+        print(file)
+        run(f"uv run {file}", shell=True, check=True)
