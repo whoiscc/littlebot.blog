@@ -572,6 +572,10 @@ pre code {
   animation: fadeInPrompt 0.3s ease forwards;
 }
 
+.search-loading {
+  color: var(--text-muted);
+}
+
 @keyframes fadeInPrompt {
   0% {
     opacity: 0;

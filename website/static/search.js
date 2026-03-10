@@ -11,7 +11,7 @@ searchInput.addEventListener('keypress', (event) => {
 
             document.querySelector('#search-title').innerHTML = `<h2>${query}</h2>`;
             const searchResults = document.querySelector('#search-results');
-            searchResults.innerHTML = '<p style="color: --text-muted">正在加载响应</p>';
+            searchResults.innerHTML = '<p class="search-loading">正在加载响应</p>';
             fetch(`https://search.littlebot.blog/?q=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
