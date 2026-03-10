@@ -7,6 +7,7 @@ searchInput.addEventListener('keypress', (event) => {
         if (query) {
             searchInput.value = '';
             searchInput.classList.remove('is-typing');
+            searchInput.blur();
 
             document.querySelector('#search-title').innerHTML = `<h2>${query}</h2>`;
             const searchResults = document.querySelector('#search-results');
