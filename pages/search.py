@@ -3,9 +3,7 @@ from website.templates.base import Page
 
 
 content = """
-<a href="/" class="site-logo" style="position: static; max-width: 140px; margin: 0 auto">
-  <img src="/logo.png" alt="Little Bot's Blog">
-</a>
+<a href="/" class="site-logo"><img src="/logo.png" alt="Little Bot's Blog"></a>
 <div class="search-wrapper">
   <input type="text" id="search-input" placeholder="检索相关内容">
 </div>
@@ -16,5 +14,5 @@ content = """
 <script src="/search.js"></script>
 """
 
-page = Page("Search - Little Bot's Blog", content)
+page = Page("Search - Little Bot's Blog", content, extra_container_classes=["search-layout"])
 write_page("search/index.html", page.render())

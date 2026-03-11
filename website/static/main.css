@@ -128,12 +128,8 @@ h2::after {
   color: var(--text-main);
   transition: var(--transition-standard);
 
-  /* 核心修复：物理层级提到最高，保证任何情况下都不会被文字挡住鼠标 */
   z-index: 10;
   opacity: 0.15;
-
-  /* 视觉魔法：正片叠底。这会让粉色水印在遇到黑色文字时透出黑色，
-     视觉上完美伪装成“沉在底层”的底纹，绝对不影响深色文字的阅读 */
   mix-blend-mode: multiply;
 }
 
@@ -155,13 +151,11 @@ h2::after {
   color: var(--text-muted);
 }
 
-/* 悬停时提亮并浮出 */
 .site-logo:hover {
   background-color: transparent;
   transform: translateY(-3px);
   color: var(--theme-primary);
   opacity: 0.9;
-  /* 悬停时取消叠底混合，让 Logo 的原色完全覆盖文字跃然而出 */
   mix-blend-mode: normal;
 }
 
@@ -210,7 +204,8 @@ a:hover {
   border-bottom-color: var(--theme-primary);
 }
 
-em {
+em,
+.kaiti {
   font-family: var(--font-alt);
   font-style: italic;
   font-synthesis: weight;
@@ -410,9 +405,7 @@ em {
 
 /* =========================================
    代码块与语法高亮 (分配色系: Mint 薄荷绿)
-   统一设计系统，完全融入页面
    ========================================= */
-/* 行内代码 */
 :not(pre)>code {
   font-family: var(--font-mono);
   background-color: rgba(var(--candy-pink-rgb), 0.08);
@@ -423,7 +416,6 @@ em {
   border: 1px solid rgba(var(--candy-pink-rgb), 0.15);
 }
 
-/* 代码块容器 */
 pre {
   font-family: var(--font-mono);
   background-color: rgba(var(--candy-mint-rgb), 0.08);
@@ -453,7 +445,7 @@ pre code {
   color: inherit;
 }
 
-/* 基于 Prism.js 的语法高亮 (在淡色底上做了对比度深化校准) */
+/* 基于 Prism.js 的语法高亮 */
 .token.comment,
 .token.prolog,
 .token.doctype,
@@ -502,29 +494,26 @@ pre code {
 }
 
 /* =========================================
-   搜索框 (分配色系: Lavender 默认 -> Aqua 输入与就绪状态)
+   搜索框 (分配色系: Lavender 默认 -> Aqua 输入与就绪)
    ========================================= */
 .search-wrapper {
   position: relative;
   margin: 2.5rem 0;
-  /* 严格限制与文章段落等宽 */
   width: 100%;
   z-index: 5;
 }
 
 #search-input {
   width: 100%;
-  /* 紧凑高度，在视觉上等同一行文字 */
-  height: 2.6rem;
+  height: 2.8rem;
+  /* 稍微增加一点高度提升触控体验 */
   padding: 0 1rem;
   font-family: var(--font-base);
   font-size: 1.05rem;
   color: var(--text-main);
-  /* 与正文协调的卡片底色与边框 */
   background-color: rgba(var(--candy-lavender-rgb), 0.05);
   border: 1px solid rgba(var(--candy-lavender-rgb), 0.4);
   border-radius: 8px;
-  /* 柔和且对称的圆角 */
   box-sizing: border-box;
   transition: var(--transition-standard);
   outline: none;
@@ -535,29 +524,21 @@ pre code {
   font-family: var(--font-alt);
 }
 
-/* 聚焦状态，适度强化外框边缘 */
 #search-input:focus {
   background-color: var(--card-bg);
   border-color: var(--candy-lavender);
   box-shadow: 0 4px 15px rgba(var(--candy-lavender-rgb), 0.15);
 }
 
-/* =========================================
-   搜索框内有文字时的样式类 (.is-typing)
-   作用于输入框本身，触发强调交互
-   ========================================= */
 #search-input.is-typing {
-  /* 切换为代表“行动/就绪”的水鸭蓝色 (Aqua) */
   border-color: var(--candy-aqua);
   background-color: rgba(var(--candy-aqua-rgb), 0.08);
   color: var(--text-main);
   font-weight: bold;
   box-shadow: 0 4px 15px rgba(var(--candy-aqua-rgb), 0.15);
   padding-right: 120px;
-  /* 提前为右侧即将出现的提示文字留出空间，防止重叠 */
 }
 
-/* 视觉魔法：利用现代 CSS :has() 监听子元素状态，在 wrapper 上渲染伪元素 */
 .search-wrapper:has(#search-input.is-typing)::after {
   content: "↵ Enter 搜索";
   position: absolute;
@@ -568,12 +549,7 @@ pre code {
   font-size: 0.85rem;
   color: var(--candy-aqua);
   pointer-events: none;
-  /* 防止遮挡右侧输入区域的点击 */
   animation: fadeInPrompt 0.3s ease forwards;
-}
-
-.search-loading {
-  color: var(--text-muted);
 }
 
 @keyframes fadeInPrompt {
@@ -586,6 +562,10 @@ pre code {
     opacity: 1;
     transform: translate(0, -50%);
   }
+}
+
+#search-input.search-loading {
+  color: var(--text-muted);
 }
 
 /* =========================================
@@ -625,4 +605,49 @@ pre code {
   background-color: transparent;
   color: var(--theme-primary);
   border-bottom-color: var(--theme-primary);
+}
+
+/* =========================================
+   搜索页面/独立页 专属布局扩展
+   使用方法: 在搜索页面的 <body> 标签加上 class="search-layout"
+   ========================================= */
+.search-layout .container {
+  /* 搜索页通常不需要给右侧留出空白的页边注空间 */
+  padding-right: 20px;
+}
+
+.search-layout .site-logo {
+  /* 在独立页面，Logo 回归居中的正常页头，不再是底层水印 */
+  position: relative;
+  top: 0;
+  right: auto;
+  display: flex;
+  margin: 0 auto 3rem auto;
+  opacity: 1;
+  /* 恢复完全不透明 */
+  mix-blend-mode: normal;
+  /* 移除正片叠底 */
+  z-index: 10;
+}
+
+.search-layout .site-logo svg,
+.search-layout .site-logo img {
+  color: var(--candy-lavender);
+  /* 独立页面的 Logo 可以使用低饱和度的薰衣草紫显得更温和 */
+}
+
+.search-layout .site-logo:hover {
+  color: var(--theme-primary);
+}
+
+#search-title h2 {
+  margin-top: 0;
+}
+
+/* 移动端搜索页适配 */
+@media (max-width: 1050px) {
+  .search-layout .site-logo {
+    opacity: 1;
+    /* 确保移动端搜索页 Logo 也是完全可见的 */
+  }
 }
