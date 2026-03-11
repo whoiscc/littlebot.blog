@@ -1,6 +1,6 @@
 const searchInput = document.querySelector('#search-input');
 
-searchInput.addEventListener('keypress', (event) => {
+searchInput.addEventListener('keypress', async (event) => {
     const query = searchInput.value.trim();
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -12,12 +12,25 @@ searchInput.addEventListener('keypress', (event) => {
             document.querySelector('#search-title').innerHTML = `<h2>${query}</h2>`;
             const searchResults = document.querySelector('#search-results');
             searchResults.innerHTML = '<p class="search-loading">正在加载响应</p>';
-            fetch(`https://search.littlebot.blog/?q=${encodeURIComponent(query)}`)
-                .then(response => response.json())
-                .then(data => {
-                    const html = DOMPurify.sanitize(marked.parse(data.response));
-                    searchResults.innerHTML = html;
-                });
+
+            let url = new URL('https://search.littlebot.blog/');
+            // let url = new URL('http://localhost:8787/');
+            url.searchParams.append('q', query);
+            url.searchParams.append('stream', 'true');
+            // switch to @microsoft/fetch-event-source if necessary
+            let response = await fetch(url);
+            let answer = "";
+            for await (const chunk of response.body) {
+                // console.log(chunk);
+                const text = new TextDecoder().decode(chunk);
+                for (const line of text.split('\n')) {
+                    if (line.startsWith('data: ')) {
+                        answer += JSON.parse(line.replace(/^data: /, '')).response;
+                    }
+                }
+                // console.log(answer);
+                searchResults.innerHTML = DOMPurify.sanitize(marked.parse(answer));
+            }
         }
     }
 });
