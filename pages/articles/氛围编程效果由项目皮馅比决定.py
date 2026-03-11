@@ -2,7 +2,7 @@ from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from website.components.article import Paragraph
+from website.components import Paragraph
 from website.fs import write_page
 from website.templates.article import PageStage
 
@@ -16,6 +16,6 @@ with Paragraph.of(s) as p:
     s += "可以观察的皮占整个项目的比例越大，氛围编程的效果就越好。"
     s += "比如这个博客的CSS样式，就是一个极致的100%可观察的项目，氛围编程的效果非常好。"
 with Paragraph.of(s) as p:
-    s += "项目的皮陷比如果是一个由项目的内在特质决定的特性，那么氛围编程可能将会永远局限。"
+    s += "项目的皮馅比如果是一个由项目的内在特质决定的特性，那么氛围编程可能将会永远局限。"
     s += "但我倾向于认为，今后会开发出新的技术来提升项目的可观察性，最后让所有的项目都变得皮厚馅小。"
 write_page("articles/vibe-coding-vs-project-skin-thickness", s.context.render())
