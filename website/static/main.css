@@ -646,8 +646,20 @@ pre code {
 
 /* 移动端搜索页适配 */
 @media (max-width: 1050px) {
+  .search-layout .container {
+    padding-top: 1rem;
+    /* 收缩页面最顶部的留白 */
+  }
+
   .search-layout .site-logo {
     opacity: 1;
     /* 确保移动端搜索页 Logo 也是完全可见的 */
+    margin-bottom: 1.5rem;
+    /* 核心修复：将 Logo 下方原本 3rem 的巨大间距减半 */
+  }
+
+  .search-layout .search-wrapper {
+    margin: 1.5rem 0;
+    /* 核心修复：将搜索框上下原本 2.5rem 的间距压缩，使布局更加紧凑 */
   }
 }
