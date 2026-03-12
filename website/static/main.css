@@ -1,5 +1,5 @@
 /* 引入 cn-fontsource 提供的方正楷体（FZKai-Z03）分片加载版 */
-@import url("https://cdn.jsdelivr.net/npm/cn-fontsource-fz-kai-z-03-regular@1.0.1/font.css");
+@import url("https://fastly.jsdelivr.net/npm/cn-fontsource-fz-kai-z-03-regular@1.0.1/font.css");
 
 /* =========================================
    全局变量与糖果色预设

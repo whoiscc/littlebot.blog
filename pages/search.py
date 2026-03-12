@@ -9,8 +9,8 @@ content = """
 </div>
 <div id="search-title"></div>
 <div id="search-results"></div>
-<script src="https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.3.2/dist/purify.min.js"></script>
+<script src="https://fastly.jsdelivr.net/npm/dompurify@3.3.2/dist/purify.min.js"></script>
+<script src="https://fastly.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.min.js"></script>
 <script src="/search.js"></script>
 """
 
