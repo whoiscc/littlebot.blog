@@ -13,24 +13,23 @@ searchInput.addEventListener('keypress', async (event) => {
             const searchResults = document.querySelector('#search-results');
             searchResults.innerHTML = '<p class="search-loading">正在加载响应</p>';
 
-            let url = new URL('https://search.littlebot.blog/');
+            const url = new URL('https://search.littlebot.blog/');
             // let url = new URL('http://localhost:8787/');
             url.searchParams.append('q', query);
             url.searchParams.append('stream', 'true');
             // switch to @microsoft/fetch-event-source if necessary
-            let response = await fetch(url);
+            const eventSource = new EventSource(url);
             let answer = "";
-            for await (const chunk of response.body) {
-                // console.log(chunk);
-                const text = new TextDecoder().decode(chunk);
-                for (const line of text.split('\n')) {
-                    if (line.startsWith('data: ')) {
-                        answer += JSON.parse(line.replace(/^data: /, '')).response;
-                    }
-                }
+            eventSource.onmessage = (event) => {
+                // console.log(event);
+                answer += JSON.parse(event.data).response;
                 // console.log(answer);
                 searchResults.innerHTML = DOMPurify.sanitize(marked.parse(answer));
-            }
+            };
+            eventSource.onerror = (err) => {
+                console.log(err);
+                eventSource.close();
+            };
         }
     }
 });

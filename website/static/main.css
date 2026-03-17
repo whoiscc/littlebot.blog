@@ -611,7 +611,7 @@ pre code {
    搜索页面/独立页 专属布局扩展
    使用方法: 在搜索页面的 <body> 标签加上 class="search-layout"
    ========================================= */
-.search-layout .container {
+.search-layout.container {
   /* 搜索页通常不需要给右侧留出空白的页边注空间 */
   padding-right: 20px;
 }
