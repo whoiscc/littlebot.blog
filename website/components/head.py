@@ -1,3 +1,6 @@
+from website.fs import asset_url
+
+
 KAI_FONT_LOADER_SCRIPT = """<script>
     (() => {
         const candidates = ["Kaiti SC", "STKaiti", "KaiTi", "Microsoft KaiTi"];
@@ -28,5 +31,5 @@ class Head:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{self.title}</title>
     {KAI_FONT_LOADER_SCRIPT}
-    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="{asset_url('main.css')}">
 </head>"""

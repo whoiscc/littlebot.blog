@@ -1,9 +1,36 @@
+from functools import cache
 from glob import glob
+from hashlib import blake2s
 from pathlib import Path
-from shutil import copy
+from shutil import copy, rmtree
 from subprocess import run
 
 from website.config import BUILD_DIR
+
+
+@cache
+def path_with_content_suffix(path: Path, suffix_len: int = 8) -> Path:
+    """Return a new path with a short content-based suffix in the filename.
+
+    The returned path keeps the same parent directory and extension, and only
+    changes the filename stem. The suffix is derived from file content, so it
+    changes whenever the file content changes.
+    """
+    if not isinstance(path, Path):
+        raise TypeError("path must be a pathlib.Path instance")
+    if suffix_len <= 0:
+        raise ValueError("suffix_len must be positive")
+    if not path.is_file():
+        raise FileNotFoundError(path)
+
+    digest = blake2s(path.read_bytes()).hexdigest()[:suffix_len]
+    return path.with_name(f"{path.stem}.{digest}{path.suffix}")
+
+
+def asset_url(filename: str) -> str:
+    """Resolve a static asset URL from the current content hash on disk."""
+    source_path = Path("website/static") / filename
+    return f"/{path_with_content_suffix(source_path).name}"
 
 
 def write_page(path, content):
@@ -20,14 +47,19 @@ def write_page(path, content):
 
 def build():
     build_dir = Path(BUILD_DIR)
+    if build_dir.exists():
+        rmtree(build_dir)
     build_dir.mkdir(exist_ok=True)
     with open(build_dir / ".gitignore", "w") as f:
         f.write("*")
 
     for file in glob("website/static/*"):
         print(file)
-        copy(file, build_dir)
-        print(f"  -> {build_dir}/{Path(file).name}")
+        source_path = Path(file)
+        target_name = path_with_content_suffix(source_path).name
+        target_path = build_dir / target_name
+        copy(file, target_path)
+        print(f"  -> {target_path}")
 
     for file in glob("pages/articles/**/*.py", recursive=True):
         print(file)

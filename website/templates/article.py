@@ -1,4 +1,5 @@
 from website import render
+from website.fs import asset_url
 
 from .base import Page as BasePage
 
@@ -10,11 +11,11 @@ class Page:
         self.items = items
 
     def render(self):
-        content = """<a href="/" class="site-logo"><img src="/logo.png" alt="Little Bot's Blog"></a>"""
+        content = f"""<a href="/" class="site-logo"><img src="{asset_url('logo.png')}" alt="Little Bot's Blog"></a>"""
         content += f"<h1>{self.title}</h1>\n"
         content += f"<div class='post-date'>{self.date.strftime('%Y-%m-%d %z')}({self.date.tzinfo})</div>\n"
         content += "\n".join([render(item) for item in self.items])
-        content += """<script src="/prism.js"></script>"""
+        content += f"""<script src="{asset_url('prism.js')}"></script>"""
         title = self.title or "(随记)"  # probably should write less of this kind
         base_page = BasePage(f"{title} - Little Bot's Blog", content)
         return base_page.render()

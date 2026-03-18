@@ -2,10 +2,10 @@ from glob import glob
 from pathlib import Path
 
 from website.config import BUILD_DIR
-from website.fs import write_page
+from website.fs import asset_url, write_page
 from website.templates.base import Page
 
-content = """<div class="site-logo"><img src="/logo.png" alt="Little Bot's Blog"></div>
+content = f"""<div class="site-logo"><img src="{asset_url('logo.png')}" alt="Little Bot's Blog"></div>
 <h1>Little Bot's Blog</h1>
 <h2 style="margin-top: 0;">人是预测机器，偶尔许愿</h2>
 <div class="monologue-block"><p>你可以<a href="/search/">借助AI搜索内容</a>。以下是所有文章的链接。</p></div>
