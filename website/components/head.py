@@ -1,20 +1,15 @@
 KAI_FONT_LOADER_SCRIPT = """<script>
-    (function () {
-        var candidates = ["Kaiti SC", "STKaiti", "KaiTi", "Microsoft KaiTi"];
-        var hasLocalKaiti = false;
-
-        if (document.fonts && document.fonts.check) {
-            for (var i = 0; i < candidates.length; i++) {
-                if (document.fonts.check('16px "' + candidates[i] + '"', '汉')) {
-                    hasLocalKaiti = true;
-                    break;
-                }
-            }
-        }
+    (() => {
+        const candidates = ["Kaiti SC", "STKaiti", "KaiTi", "Microsoft KaiTi"];
+        const canCheckFonts = document.fonts && typeof document.fonts.check === "function";
+        const hasLocalKaiti = canCheckFonts && candidates.some((family) => (
+            document.fonts.check(`16px "${family}"`, "汉")
+        ));
+        console.log("Local Kaiti fonts available:", hasLocalKaiti);
 
         if (!hasLocalKaiti) {
             document.documentElement.classList.add("no-local-kaiti");
-            var link = document.createElement("link");
+            const link = document.createElement("link");
             link.rel = "stylesheet";
             link.href = "https://fastly.jsdelivr.net/npm/cn-fontsource-fz-kai-z-03-regular@1.0.1/font.css";
             document.head.appendChild(link);
