@@ -14,5 +14,5 @@ content = """
 <script src="/search.js"></script>
 """
 
-page = Page("Search - Little Bot's Blog", content, extra_container_classes=["search-layout"])
+page = Page("Search - Little Bot's Blog", content, layout="search")
 write_page("search/index.html", page.render())

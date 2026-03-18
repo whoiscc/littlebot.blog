@@ -1,6 +1,6 @@
 const searchInput = document.querySelector('#search-input');
 
-searchInput.addEventListener('keypress', async (event) => {
+searchInput.addEventListener('keypress', (event) => {
     const query = searchInput.value.trim();
     if (event.key === 'Enter') {
         event.preventDefault();
