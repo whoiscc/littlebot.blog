@@ -1,3 +1,16 @@
+@import url("https://fastly.jsdelivr.net/npm/cn-fontsource-fz-kai-z-03-regular@1.0.1/font.css");
+
+@font-face {
+  font-family: 'Latin-Italic-Only';
+  /* 依次尝试调用用户本地系统自带的经典英文字体的斜体版本 */
+  src: local('Palatino Linotype Italic'),
+       local('Palatino Italic'),
+       local('Georgia Italic'),
+       local('Times New Roman Italic');
+  /* 核心魔法：限制此字体规则仅对基本拉丁字母生效 */
+  unicode-range: U+0000-024F;
+}
+
 /* =========================================
    全局变量与糖果色预设
    ========================================= */
@@ -39,13 +52,8 @@
 
   /* 字体栈 */
   --font-base: "Georgia", "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, SimSun, serif;
-  --font-alt: "Palatino Linotype", Palatino, Georgia, "Times New Roman", "Kaiti SC", "STKaiti", "KaiTi", "Microsoft KaiTi", serif;
+  --font-alt: "Latin-Italic-Only", "Kaiti SC", "STKaiti", "KaiTi", "Microsoft KaiTi", "FZKai-Z03", serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-}
-
-/* 无本地楷体时，由 head 内脚本注入网络字体并启用该覆盖 */
-html.no-local-kaiti {
-  --font-alt: "Palatino Linotype", Palatino, Georgia, "Times New Roman", "FZKai-Z03", "Kaiti SC", "STKaiti", "KaiTi", "Microsoft KaiTi", serif;
 }
 
 /* =========================================
@@ -196,8 +204,7 @@ a:hover {
 
 em {
   font-family: var(--font-alt);
-  font-style: italic;
-  font-synthesis: none;
+  font-style: normal;
   color: var(--theme-primary);
   font-size: 1.1em;
 }
