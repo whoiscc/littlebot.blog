@@ -7,8 +7,9 @@ from website.config import BUILD_DIR
 
 
 def write_page(path, content):
+    is_dir = path.endswith("/")
     path = Path(path)
-    if not path.suffix:
+    if is_dir or not path.suffix:
         path = path / "index.html"
     build_path = BUILD_DIR / path
     build_path.parent.mkdir(parents=True, exist_ok=True)
