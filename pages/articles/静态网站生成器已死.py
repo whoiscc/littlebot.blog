@@ -3,7 +3,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from website.components import Code, CodeBlock, Hyperlink, Monologue, Paragraph, SideNote
-from website.fs import write_page
+from website.fs import write_page, write_sitemap_entry
 from website.templates.article import PageStage
 
 
@@ -68,3 +68,4 @@ with Paragraph.of(s):
     s += "这是公开知识模型走向私人模型的第一步。"
 
 write_page("articles/ssg-dead", s.context.render())
+write_sitemap_entry("articles/ssg-dead", s.context.lastmod())

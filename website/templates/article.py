@@ -9,6 +9,10 @@ class Page:
         self.title = title
         self.date = date
         self.items = items
+        self.revision_dates = []
+
+    def lastmod(self):
+        return next(reversed(self.revision_dates), self.date)
 
     def render(self):
         content = f"""<a href="/" class="site-logo"><img src="{asset_url('logo.png')}" alt="Little Bot's Blog"></a>"""

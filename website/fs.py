@@ -45,6 +45,24 @@ def write_page(path, content):
     print(f"  -> {build_path}")
 
 
+def write_sitemap_entry(path, lastmod):
+    sitemap_path = Path(BUILD_DIR) / "sitemap.xml"
+    with sitemap_path.open("a") as f:
+        f.write(
+            f"""<url>
+    <loc>/{path}</loc>
+    <lastmod>{lastmod}</lastmod>
+    <priority>0.5</priority>
+</url>
+"""
+        )
+
+
+def write_article_page(path, page):
+    write_page(f"articles/{path}", page.render())
+    write_sitemap_entry(f"articles/{path}", page.lastmod())
+
+
 def build():
     build_dir = Path(BUILD_DIR)
     if build_dir.exists():

@@ -2,7 +2,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 from website.components import Paragraph, Emphasize
-from website.fs import write_page
+from website.fs import write_page, write_sitemap_entry
 from website.templates.article import PageStage
 
 
@@ -32,3 +32,4 @@ with Paragraph.of(s):
     s += "但是它的交易情况会和现在完全不一样了。"
 
 write_page("articles/expected-lifetime-market-microstructure", s.context.render())
+write_sitemap_entry("articles/expected-lifetime-market-microstructure", s.context.lastmod())

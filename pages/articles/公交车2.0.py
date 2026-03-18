@@ -3,7 +3,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from website.components import Emphasize, Monologue, Paragraph
-from website.fs import write_page
+from website.fs import write_page, write_sitemap_entry
 from website.templates.article import PageStage
 
 
@@ -32,3 +32,4 @@ with Paragraph.of(s):
 with Monologue.of(s):
     s += "我的公交车3.0方案是具有独占路权的无人驾驶网约车，日后再写。"
 write_page("articles/bus2.0/", s.context.render())
+write_sitemap_entry("articles/bus2.0/", s.context.lastmod())

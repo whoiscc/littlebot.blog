@@ -3,7 +3,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from website.components import Paragraph, Emphasize, SideNote
-from website.fs import write_page
+from website.fs import write_page, write_sitemap_entry
 from website.templates.article import PageStage
 
 title = Path(__file__).stem
@@ -28,3 +28,4 @@ with Paragraph.of(s):
     s += "一篇论文收到关注和尊敬的程度完全由它在工业界带来的影响决定，是否发表在会议上（过）并无关系。"
     s += "这被评论为「变成系统领域了」，但是我觉得更像是半导体领域。"
 write_page("articles/paper-inflation", s.context.render())
+write_sitemap_entry("articles/paper-inflation", s.context.lastmod())

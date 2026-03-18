@@ -1,7 +1,7 @@
 from zoneinfo import ZoneInfo
 
 from website.components import Paragraph, SideNote
-from website.fs import write_page
+from website.fs import write_page, write_sitemap_entry
 from website.templates.article import Page
 from datetime import datetime
 
@@ -24,3 +24,4 @@ body = [
 ]
 page = Page(title, date, body)
 write_page("articles/brain-prediction-overfitting", page.render())
+write_sitemap_entry("articles/brain-prediction-overfitting", page.lastmod())

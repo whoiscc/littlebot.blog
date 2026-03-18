@@ -3,7 +3,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from website.components import Paragraph
-from website.fs import write_page
+from website.fs import write_page, write_sitemap_entry
 from website.templates.article import PageStage
 
 
@@ -19,3 +19,4 @@ with Paragraph.of(s) as p:
     s += "项目的皮馅比如果是一个由项目的内在特质决定的特性，那么氛围编程可能将会永远局限。"
     s += "但我倾向于认为，今后会开发出新的技术来提升项目的可观察性，最后让所有的项目都变得皮厚馅小。"
 write_page("articles/vibe-coding-vs-project-skin-thickness", s.context.render())
+write_sitemap_entry("articles/vibe-coding-vs-project-skin-thickness", s.context.lastmod())
