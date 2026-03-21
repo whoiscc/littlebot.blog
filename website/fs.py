@@ -1,6 +1,7 @@
 from functools import cache
 from glob import glob
 from hashlib import blake2s
+from os import environ
 from pathlib import Path
 from shutil import copy, rmtree
 from subprocess import run
@@ -34,6 +35,9 @@ def asset_url(filename: str) -> str:
 
 
 def write_page(path, content):
+    if environ.get("LBB_CONTEXT"):
+        return
+
     is_dir = path.endswith("/")
     path = Path(path)
     if is_dir or not path.suffix:
@@ -46,16 +50,16 @@ def write_page(path, content):
 
 
 def write_sitemap_entry(path, lastmod):
-    sitemap_path = Path(BUILD_DIR) / "sitemap.xml"
-    with sitemap_path.open("a") as f:
-        f.write(
-            f"""<url>
+    if environ.get("LBB_CONTEXT") != "sitemap":
+        return
+
+    print(
+        f"""<url>
     <loc>/{path}</loc>
     <lastmod>{lastmod}</lastmod>
     <priority>0.5</priority>
-</url>
-"""
-        )
+</url>"""
+    )
 
 
 def write_article_page(path, page):
@@ -79,12 +83,12 @@ def build():
         copy(file, target_path)
         print(f"  -> {target_path}")
 
-    for file in glob("pages/articles/**/*.py", recursive=True):
-        print(file)
-        run(f"uv run {file}", shell=True, check=True)
-
     for file in glob("pages/**/*.py", recursive=True):
-        if file.startswith("pages/articles/"):
+        if file == "pages/index.py":
             continue
         print(file)
         run(f"uv run {file}", shell=True, check=True)
+
+    file = "pages/index.py"
+    print(file)
+    run(f"uv run {file}", shell=True, check=True)
