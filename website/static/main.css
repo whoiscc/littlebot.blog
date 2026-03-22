@@ -2,11 +2,21 @@
 
 @font-face {
   font-family: 'Latin-Italic-Only';
-  /* 依次尝试调用用户本地系统自带的经典英文字体的斜体版本 */
-  src: local('Palatino Linotype Italic'),
-       local('Palatino Italic'),
+  /* 仅使用拉丁衬线斜体，并覆盖 Android / Windows / macOS / Linux 常见原生字体 */
+  src: local('Palatino Italic'),
+       local('Palatino-Italic'),
+       local('Palatino Linotype Italic'),
+       local('Book Antiqua Italic'),
+       local('Times New Roman Italic'),
+       local('TimesNewRomanPS-ItalicMT'),
        local('Georgia Italic'),
-       local('Times New Roman Italic');
+       local('Georgia-Italic'),
+       local('Noto Serif Italic'),
+       local('NotoSerif-Italic'),
+       local('Droid Serif Italic'),
+       local('Liberation Serif Italic'),
+       local('Nimbus Roman No9 L Italic'),
+       local('DejaVu Serif Italic');
   /* 核心魔法：限制此字体规则仅对基本拉丁字母生效 */
   unicode-range: U+0000-024F;
 }
@@ -173,7 +183,7 @@ h2::after {
   color: var(--text-muted);
   font-size: 0.9rem;
   font-family: var(--font-mono);
-  font-style: italic;
+  /* font-style: italic; */
   letter-spacing: 0.5px;
   position: relative;
   z-index: 2;

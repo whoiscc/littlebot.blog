@@ -18,6 +18,7 @@ class Page:
         content = f"""<a href="/" class="site-logo"><img src="{asset_url('logo.png')}" alt="Little Bot's Blog"></a>"""
         content += f"<h1>{self.title}</h1>\n"
         content += f"<div class='post-date'>{self.date.strftime('%Y-%m-%d %z')}({self.date.tzinfo})</div>\n"
+        content += """<div class="cf-turnstile" data-sitekey="0x4AAAAAACuXruNPf_FMA30B"></div>\n"""
         content += "\n".join([render(item) for item in self.items])
         content += f"""<script src="{asset_url('prism.js')}"></script>"""
         title = self.title or "(随记)"  # probably should write less of this kind
