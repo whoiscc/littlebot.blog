@@ -8,7 +8,7 @@ from website.templates.article import PageStage
 
 
 title = Path(__file__).stem
-date = datetime(2026, 5, 18, tzinfo=ZoneInfo("Asia/Singapore"))
+date = datetime(2026, 3, 18, tzinfo=ZoneInfo("Asia/Singapore"))
 s = PageStage(title, date)
 with Paragraph.of(s):
     s += "公交车是一种泄漏抽象（leaky abstraction）。"
