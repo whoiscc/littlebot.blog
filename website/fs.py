@@ -53,6 +53,8 @@ def write_sitemap_entry(path, lastmod):
     if environ.get("LBB_CONTEXT") != "sitemap":
         return
 
+    if not path.endswith("/"):
+        path += "/"
     print(
         f"""<url>
     <loc>/{path}</loc>
