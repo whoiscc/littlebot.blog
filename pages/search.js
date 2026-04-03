@@ -1,6 +1,6 @@
 const searchInput = document.querySelector('#search-input');
 
-searchInput.addEventListener('keypress', (event) => {
+searchInput.addEventListener('keypress', async (event) => {
     const query = searchInput.value.trim();
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -13,23 +13,59 @@ searchInput.addEventListener('keypress', (event) => {
             const searchResults = document.querySelector('#search-results');
             searchResults.innerHTML = '<p class="search-loading">正在加载响应</p>';
 
-            const url = new URL('https://search.littlebot.blog/');
-            // let url = new URL('http://localhost:8787/');
-            url.searchParams.append('q', query);
-            url.searchParams.append('stream', 'true');
-            // switch to @microsoft/fetch-event-source if necessary
-            const eventSource = new EventSource(url);
-            let answer = "";
-            eventSource.onmessage = (event) => {
-                // console.log(event);
-                answer += JSON.parse(event.data).response;
-                // console.log(answer);
-                searchResults.innerHTML = DOMPurify.sanitize(marked.parse(answer));
-            };
-            eventSource.onerror = (err) => {
-                console.log(err);
-                eventSource.close();
-            };
+            const url = new URL('https://84b379a3-48bb-49d5-83e5-f96851f774a8.search.ai.cloudflare.com/chat/completions');
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": query
+                        }
+                    ],
+                    "stream": true,
+                }),
+            });
+
+            let answer = '';
+            let buffer = '';
+            const decoder = new TextDecoder();
+
+            for await (const chunk of response.body) {
+                buffer += decoder.decode(chunk, { stream: true });
+                const events = buffer.split('\n\n');
+                buffer = events.pop() || '';
+
+                for (const eventBlock of events) {
+                    const lines = eventBlock.split('\n');
+                    const dataLines = lines
+                        .filter((line) => line.startsWith('data:'))
+                        .map((line) => line.slice(5).trim());
+
+                    for (const data of dataLines) {
+                        if (data === '[DONE]') {
+                            continue;
+                        }
+
+                        try {
+                            const payload = JSON.parse(data);
+                            const delta = payload?.choices?.[0]?.delta?.content || '';
+                            if (delta) {
+                                answer += delta;
+                                searchResults.innerHTML = DOMPurify.sanitize(marked.parse(answer));
+                            }
+                        } catch (err) {
+                            console.log('Failed to parse SSE data', err);
+                        }
+                    }
+                }
+            }
+
+            // Flush any final buffered text after stream completion.
+            buffer += decoder.decode();
         }
     }
 });
