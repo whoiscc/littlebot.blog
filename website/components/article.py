@@ -3,6 +3,24 @@ from contextlib import contextmanager
 from website import render
 
 
+def transpile(content):
+    source = ["["]
+    for line in content.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        if line == "@@":
+            source.append("),")
+        elif line.startswith("@"):
+            source.append(line[1:] + "(")
+        elif line.startswith("#"):
+            source.append(line[2:])
+        else:
+            source.append(f'"{line}",')
+    source.append("]")
+    return "\n".join(source)
+
+
 class Container:
     def __init__(self, *items):
         self.items = list(items)

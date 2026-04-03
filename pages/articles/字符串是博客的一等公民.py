@@ -2,7 +2,7 @@ from website.article_prelude import *
 
 title = Path(__file__).stem
 date = datetime(2026, 4, 3, tzinfo=ZoneInfo("Asia/Singapore"))
-content = r"""
+content = """
 @Paragraph
     我在开始搭建这个博客时做出了一个判断：我不需要借助Markdown也可以足够方便地写博客，从而可以绕开Markdown会带来的一些限制。
     @SideNote
@@ -45,19 +45,19 @@ content = r"""
     比方说我正在写的这段话，在原始的Python文件里是这样的
     @CodeBlock
     plaintext
-    # "".join(open(__file__).readlines()[43:57])
+    # "".join(open(__file__).readlines()[43:57]),
     @@
     然后，预处理器会把它转换成
     @CodeBlock
     python
-    # transpile("".join(open(__file__).readlines()[43:57]))
+    # transpile("".join(open(__file__).readlines()[43:57])),
     @@
     预处理的逻辑非常简单。
     默认在文本模式下，遇到#开头的「注释」行则进入代码模式，@行则是一种特殊的代码模式，简化了最常见的元素定义代码行。
 @@
 @Monologue
     代码行长得像注释存粹是为了节目效果。
-    （好吧，一个次要原因是@和#是可以在中文输入法下直接打出的为数不多的英文符号。）
+    （好吧，一个次要原因是@和#是为数不多可以在中文输入法下直接打出的英文符号。）
     说起来，如果Python的ast模块给注释再多一点点尊重，也许我就不用这么大费周折了。
 @@
 @Paragraph
@@ -72,24 +72,5 @@ content = r"""
 """
 
 
-def transpile(content):
-    source = ["["]
-    for line in content.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        if line == "@@":
-            source.append("),")
-        elif line.startswith("@"):
-            source.append(line[1:] + "(")
-        elif line.startswith("#"):
-            source.append(line[2:])
-        else:
-            source.append(f'"{line}",')
-    source.append("]")
-    return "\n".join(source)
-
-
-compiled_content = eval(transpile(content))
-page = Page(title, date, compiled_content)
+page = Page(title, date, eval(transpile(content)))
 write_article_page("blogs-are-strings", page)
