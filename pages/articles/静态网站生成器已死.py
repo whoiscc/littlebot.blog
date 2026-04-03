@@ -9,7 +9,7 @@ from website.templates.article import PageStage
 
 title = Path(__file__).stem
 date = datetime(2026, 3, 8, tzinfo=ZoneInfo("Asia/Singapore"))
-s = PageStage(title, date)
+s = PageStage(title, date) # revision dates at the end of the file to avoid mess up dynamic code block
 with Paragraph.of(s):
     s += "首先要说明，判了死刑的只是静态网站生成器。"
     s += "至于它们所生成的静态网站", SideNote("比如说读者正看着的这个。"), "，不但会活着，而且可能要活出第二春了。"
@@ -28,6 +28,11 @@ with Paragraph.of(s):
 with Paragraph.of(s):
     s += "我说这个当然不是为了说我代码写得精湛。"
     s += "写个组件库并设计花哨的语法也并不是必须的，引入一个简单的静态渲染markdown库也可以做到一样的事情。"
+    with SideNote.of(s):
+        s += "写完这篇博客后，我又写了一些博客，然后根据实际使用体验设计了"
+        with Hyperlink.of(s, "/articles/blogs-are-strings/"):
+            s += "新的语法"
+        s += "。"
     s += "说到底这种技巧都不是我自己想到的，而是看了"
     with Hyperlink.of(s, "https://trynova.dev/"):
         s += "Nova JS引擎的网站"
@@ -67,5 +72,6 @@ with Paragraph.of(s):
     s += "博客网站会在私人大模型索引的助力下重新热门起来，因为人们对于一个纯净的只包含自己想法的代理（agent）是有需求的。"
     s += "这是公开知识模型走向私人模型的第一步。"
 
+s.context.revision_dates.append(datetime(2026, 4, 3, tzinfo=ZoneInfo("Asia/Singapore")))
 write_page("articles/ssg-dead", s.context.render())
 write_sitemap_entry("articles/ssg-dead", s.context.lastmod())
