@@ -669,3 +669,7 @@ pre code {
     /* 核心修复：将搜索框上下原本 2.5rem 的间距压缩，使布局更加紧凑 */
   }
 }
+
+chat-page-snippet {
+  --search-snippet-font-family: var(--font-base);
+}
