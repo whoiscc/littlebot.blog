@@ -402,3 +402,10 @@ pre code {
     scroll-behavior: auto !important;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .site-logo svg,
+  .site-logo img {
+    filter: invert(1);
+  }
+}
