@@ -154,6 +154,10 @@ em {
   counter-increment: sidenote-counter;
 }
 
+.sidenote-wrapper > sup::before {
+  content: "\2060";
+}
+
 .margin-toggle {
   position: absolute;
   width: 1px;
