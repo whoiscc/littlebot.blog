@@ -31,7 +31,7 @@
   --font-base: "Georgia", "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, SimSun, serif;
   --font-alt: "Latin-Italic-Only", "Kaiti SC", "STKaiti", "KaiTi", "Microsoft KaiTi", "FZKai-Z03", serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  color-scheme: light dark;
+  color-scheme: only light;
 }
 
 * {
@@ -405,17 +405,5 @@ pre code {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    color: #ddd;
-    background: #000;
-  }
-
-  .site-logo svg,
-  .site-logo img {
-    filter: invert(1);
   }
 }
