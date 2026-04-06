@@ -1,4 +1,3 @@
-from functools import cache
 from glob import glob
 from hashlib import blake2s
 from os import environ
@@ -9,7 +8,6 @@ from subprocess import run
 from website.config import BUILD_DIR
 
 
-@cache
 def path_with_content_suffix(path: Path, suffix_len: int = 8) -> Path:
     """Return a new path with a short content-based suffix in the filename.
 
@@ -34,7 +32,7 @@ def asset_url(filename: str) -> str:
     return f"/{path_with_content_suffix(source_path).name}"
 
 
-def write_page(path, content):
+def write_page(path, render_lines):
     if environ.get("LBB_CONTEXT"):
         return
 
@@ -45,7 +43,8 @@ def write_page(path, content):
     build_path = BUILD_DIR / path
     build_path.parent.mkdir(parents=True, exist_ok=True)
     with open(build_path, "w") as f:
-        f.write(content)
+        for line in render_lines:
+            f.write(line + "\n")
     print(f"  -> {build_path}")
 
 

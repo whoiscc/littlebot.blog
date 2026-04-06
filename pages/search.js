@@ -11,7 +11,7 @@ searchInput.addEventListener('keypress', async (event) => {
 
             document.querySelector('#search-title').innerHTML = `<h2>${query}</h2>`;
             const searchResults = document.querySelector('#search-results');
-            searchResults.innerHTML = '<p class="search-loading">正在加载响应</p>';
+            searchResults.innerHTML = '<p class="search-loading">烧烤中</p>';
 
             const url = new URL('https://84b379a3-48bb-49d5-83e5-f96851f774a8.search.ai.cloudflare.com/chat/completions');
             const response = await fetch(url, {
