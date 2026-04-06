@@ -4,10 +4,10 @@ from website.render import RenderLines
 
 
 class Page:
-    def __init__(self, title, content, epilogue=None, layout=None):
+    def __init__(self, title, content, epilogue_items=None, layout=None):
         self.head = Head(title)
         self.content = content
-        self.epilogue = epilogue or []
+        self.epilogue_items = epilogue_items or []
         self.layout = layout
 
     def render(self):
@@ -22,11 +22,7 @@ class Page:
                 self.content,
                 """</main>""",
                 f"""<footer class="site-footer">构建于{datetime.now(tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")}</footer>""",
-                """<script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        async
-        defer
-    ></script>""",
+                *self.epilogue_items,
             ),
             """</body>""",
             """</html>""",

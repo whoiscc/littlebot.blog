@@ -40,8 +40,11 @@ class Page:
                     """</div>""",
                 ),
                 """</article>""",
-                f"""<script src="{asset_url('prism.js')}"></script>""",
             ),
+            epilogue_items=[
+                f"""<script src="{asset_url('prism.js')}"></script>""",
+                """<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>""",
+            ],
         )
         return base_page.render()
 
