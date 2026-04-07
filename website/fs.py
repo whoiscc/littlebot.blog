@@ -43,8 +43,11 @@ def write_page(path, render_lines):
     build_path = BUILD_DIR / path
     build_path.parent.mkdir(parents=True, exist_ok=True)
     with open(build_path, "w") as f:
-        for line in render_lines:
-            f.write(line + "\n")
+        if isinstance(render_lines, str):
+            f.write(render_lines)
+        else:
+            for line in render_lines:
+                f.write(line + "\n")
     print(f"  -> {build_path}")
 
 
