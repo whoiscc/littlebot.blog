@@ -334,7 +334,8 @@ pre code {
 }
 
 .search-layout .container {
-  padding-right: 1.25rem;
+  max-width: calc(var(--max-width) - var(--side-width) - var(--side-gap));
+  padding: 2.2rem 1.5rem;
 }
 
 .search-layout .site-logo {
