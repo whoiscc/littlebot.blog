@@ -11,7 +11,7 @@ for page in glob(f"{BUILD_DIR}/**/index.html", recursive=True):
     path = Path(page).parent.relative_to(BUILD_DIR)
     links.append(f"""<a href="{path}/"><em>{path}</em></a><br>""")
 page = Page(
-    "Little Bot's Blog",
+    "",
     RenderLines(
         f"""<a href="/" class="site-logo"><img src="{asset_url('logo.png')}" alt="Little Bot's Blog"></a>""",
         """<h1>Little Bot's Blog</h1>""",

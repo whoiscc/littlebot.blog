@@ -9,7 +9,7 @@ with Path(__file__).with_name("search.js").open() as f:
     search_js = f.readlines()
 
 page = Page(
-    "Search - Little Bot's Blog",
+    "Search",
     RenderLines(
         f"""<a href="/" class="site-logo"><img src="{asset_url('logo.png')}" alt="Little Bot's Blog"></a>""",
         """<div class="search-wrapper">""",

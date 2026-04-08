@@ -19,7 +19,7 @@ class Page:
     def render(self):
         title = self.title or "(随记)"  # probably should write less of this kind
         base_page = BasePage(
-            f"{title} - Little Bot's Blog",
+            f"{title}",
             RenderLines(
                 f"""<a href="/" class="site-logo"><img src="{asset_url('logo.png')}" alt="Little Bot's Blog"></a>""",
                 """<article>""",

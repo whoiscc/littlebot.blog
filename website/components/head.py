@@ -7,12 +7,16 @@ class Head:
         self.title = title
 
     def render(self):
+        decorated_title = (
+            f"{self.title} - Little Bot's Blog" if self.title else "Little Bot's Blog"
+        )
         return RenderLines(
             """<head>""",
             RenderLines(
                 """<meta charset="UTF-8">""",
                 """<meta name="viewport" content="width=device-width, initial-scale=1.0">""",
-                f"""<title>{self.title}</title>""",
+                f"""<meta name="context" content="title: {self.title}">""",
+                f"""<title>{decorated_title}</title>""",
                 """<link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>""",
                 """<link rel="preconnect" href="https://challenges.cloudflare.com">""",
                 # maybe skip loading on pages that don't need it
