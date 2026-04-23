@@ -7,7 +7,7 @@ from website.render import RenderLines
 from website.templates.base import Page
 
 links = []
-for page in glob(f"{BUILD_DIR}/**/index.html", recursive=True):
+for page in glob(f"{BUILD_DIR}/*/**/index.html", recursive=True):
     path = Path(page).parent.relative_to(BUILD_DIR)
     links.append(f"""<a href="{path}/"><em>/{path}/</em></a><br>""")
 page = Page(

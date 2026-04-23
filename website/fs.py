@@ -33,9 +33,6 @@ def asset_url(filename: str) -> str:
 
 
 def write_page(path, render_lines):
-    if environ.get("LBB_CONTEXT"):
-        return
-
     is_dir = path.endswith("/")
     path = Path(path)
     if is_dir or not path.suffix:
@@ -52,18 +49,17 @@ def write_page(path, render_lines):
 
 
 def write_sitemap_entry(path, lastmod):
-    if environ.get("LBB_CONTEXT") != "sitemap":
-        return
-
     if not path.endswith("/"):
         path += "/"
-    print(
-        f"""<url>
+    entry = f"""<url>
     <loc>/{path}</loc>
     <lastmod>{lastmod}</lastmod>
     <priority>0.5</priority>
-</url>"""
-    )
+</url>
+"""
+    build_path = BUILD_DIR / path
+    with open(build_path / "sitemap.entry.xml", "w") as f:
+        f.write(entry)
 
 
 def write_article_page(path, page):
@@ -88,11 +84,8 @@ def build():
         print(f"  -> {target_path}")
 
     for file in glob("pages/**/*.py", recursive=True):
-        if file == "pages/index.py":
-            continue
         print(file)
         run(f"uv run {file}", shell=True, check=True)
-
-    file = "pages/index.py"
-    print(file)
-    run(f"uv run {file}", shell=True, check=True)
+    for file in glob("pages/**/*.py", recursive=True):
+        print(file)
+        run(f"uv run {file}", shell=True, check=True)
