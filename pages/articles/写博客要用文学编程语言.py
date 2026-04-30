@@ -28,29 +28,20 @@ content = """
         一点
     @@
     确实是矫枉过正了。
-    如同绝大多数
-    @SideNote
-        是哪个PHP导致我不能宣称「所有」我就不说了（逃
-    @@
-    通用编程语言一样，Python默认用户写下的是代码，而「文本模式」需要特定的符号进入和离开。
-    然而，在写博客的时候，就算我想要玩再多的花活，我还是希望能默认处于文本模式。
-    这一点是Python，乃至任何主流语言都没办法做到的小众需求。
-    @SideNote
-        Racket一定可以的，但是（如下文所述的）我的方案和Racket又有什么区别呢。
-    @@
-    这并不意味着我就要用回Markdown了。
-    我只是收获了这个新的感悟，然后写了个简单的预处理器来吧文本模式和代码模式给翻转了过来。
+    写博客所需要的DSL有一个小众但至关重要的需求：文学编程（literate programming）。
+    Markdown的其他一切对我来说都不重要，只有文学编程会带来本质上的区别。
+    最终，我没有选择用回Markdown，而是写了个简单的预处理器来吧文本模式和代码模式给翻转了过来。
 @@
 @Paragraph
     比方说我正在写的这段话，在原始的Python文件里是这样的
     @CodeBlock
     plaintext
-    # "".join(open(__file__).readlines()[43:57]),
+    # "".join(open(__file__).readlines()[34:48]),
     @@
     然后，预处理器会把它转换成
     @CodeBlock
     python
-    # transpile("".join(open(__file__).readlines()[43:57])),
+    # transpile("".join(open(__file__).readlines()[34:48])),
     @@
     预处理的逻辑非常简单。
     默认在文本模式下，遇到#开头的「注释」行则进入代码模式，@行则是一种特殊的代码模式，简化了最常见的元素定义代码行。
@@ -73,4 +64,5 @@ content = """
 
 
 page = Page(title, date, eval(transpile(content)))
+page.revision_dates.append(datetime(2026, 4, 30, tzinfo=ZoneInfo("Asia/Singapore")))
 write_article_page("blogs-are-strings", page)
