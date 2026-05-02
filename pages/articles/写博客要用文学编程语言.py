@@ -61,8 +61,6 @@ content = """
     但起码以现在这个状况，我觉得还不至于。
 @@
 """
-
-
 page = Page(title, date, eval(transpile(content)))
 page.revision_dates.append(datetime(2026, 4, 30, tzinfo=ZoneInfo("Asia/Singapore")))
 write_article_page("blogs-are-strings", page)
