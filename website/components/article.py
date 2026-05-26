@@ -77,7 +77,8 @@ class CodeBlock(Container):
         self.language = language
 
     def render(self):
-        return f"""<pre><code class="language-{self.language}">{super().render()}</code></pre>"""
+        inner = "\n".join(render(item) for item in self.items)
+        return f"""<pre><code class="language-{self.language}">{inner}</code></pre>"""
 
 
 class Code:
