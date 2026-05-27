@@ -5,17 +5,27 @@ from website import render
 
 def transpile(content):
     source = ["["]
+    indent_level = None
     for line in content.splitlines():
+        full_len = len(line)
         line = line.strip()
         if not line:
             continue
         if line == "@@":
             source.append("),")
+            indent_level = None
         elif line.startswith("@"):
             source.append(line[1:] + "(")
+            indent_level = None
         elif line.startswith("#"):
             source.append(line[2:])
         else:
+            indent = full_len - len(line)
+            if indent_level is None:
+                indent_level = indent
+            else:
+                assert indent >= indent_level
+                line = " " * (indent - indent_level) + line
             source.append(f'"{line}",')
     source.append("]")
     return "\n".join(source)
