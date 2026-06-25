@@ -28,8 +28,8 @@ def path_with_content_suffix(path: Path, suffix_len: int = 8) -> Path:
 
 def asset_url(filename: str) -> str:
     """Resolve a static asset URL from the current content hash on disk."""
-    source_path = Path("website/static") / filename
-    return f"/{path_with_content_suffix(source_path).name}"
+    source_path = Path(BUILD_DIR) / '.state' / 'static' / filename
+    return f"/{source_path.resolve().name}"
 
 
 def write_page(path, render_lines):
@@ -57,7 +57,8 @@ def write_sitemap_entry(path, lastmod):
     <priority>0.5</priority>
 </url>
 """
-    build_path = BUILD_DIR / path
+    build_path = BUILD_DIR / '.state' / path
+    build_path.mkdir()
     with open(build_path / "sitemap.entry.xml", "w") as f:
         f.write(entry)
 
@@ -71,21 +72,34 @@ def build():
     build_dir = Path(BUILD_DIR)
     if build_dir.exists():
         rmtree(build_dir)
-    build_dir.mkdir(exist_ok=True)
+    build_dir.mkdir()
     with open(build_dir / ".gitignore", "w") as f:
         f.write("*")
+    (build_dir / '.state').mkdir()
 
+    print("PHASE static")
+    symlink_dir = build_dir / '.state' / 'static'
+    symlink_dir.mkdir()
     for file in glob("website/static/*"):
         print(file)
         source_path = Path(file)
         target_name = path_with_content_suffix(source_path).name
         target_path = build_dir / target_name
         copy(file, target_path)
+        
+        symlink = symlink_dir / source_path.name
+        symlink.symlink_to(target_path.relative_to(symlink_dir, walk_up=True))
         print(f"  -> {target_path}")
+    print()
 
-    for file in glob("pages/**/*.py", recursive=True):
+    print("PHASE article")
+    (build_dir / '.state' / 'articles').mkdir()
+    for file in glob("pages/articles/*.py", recursive=True):
         print(file)
         run(f"uv run {file}", shell=True, check=True)
-    for file in glob("pages/**/*.py", recursive=True):
+    print()
+
+    print("PHASE summary")
+    for file in glob("pages/*.py", recursive=True):
         print(file)
         run(f"uv run {file}", shell=True, check=True)
