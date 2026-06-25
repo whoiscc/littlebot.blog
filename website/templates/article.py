@@ -26,7 +26,7 @@ class Page:
                 RenderLines(
                     f"""<h1>{self.title}</h1>""",
                     f"""<div class="post-date">{self.date.strftime('%Y-%m-%d %z')}({self.date.tzinfo})</div>""",
-                    """<div class="cf-turnstile" data-sitekey="0x4AAAAAACuXruNPf_FMA30B"></div>""",
+                    """<div class="cf-turnstile" data-sitekey="0x4AAAAAACuXruNPf_FMA30B" data-appearance="interaction-only"></div>""",
                     *(render(item) for item in self.items),
                     """<div style="display: none;">""",
                     RenderLines(
@@ -61,6 +61,10 @@ class PageStage:
         return self
 
 
+# Sacrificial padding for Cloudflare AI Search: its chunker drops the final partial
+# chunk (< 1024 tokens), erasing sub-chunk articles and truncating the tail of longer
+# ones. This block must stay >= one full 1024-token chunk so the dropped remainder is
+# always pure inert filler, never real content -- hence the `* 2` (~1700 cl100k tokens).
 Page.LOREM_IPSUM = """
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lacinia tellus sed massa iaculis maximus. Maecenas aliquam leo eget justo cursus ultricies. In tempor libero metus. Duis eu volutpat leo. Praesent dolor est, eleifend vel imperdiet sit amet, fermentum at mauris. Duis non erat porttitor, efficitur eros eu, molestie urna. Vestibulum eleifend enim et est ullamcorper pretium sit amet sit amet lectus. Aliquam erat volutpat. Morbi condimentum mauris quis dapibus fermentum. Mauris mollis nulla id enim finibus, aliquet sagittis eros molestie. Sed pretium est placerat iaculis venenatis.
 
@@ -71,4 +75,4 @@ Nulla hendrerit libero sit amet tincidunt luctus. Donec efficitur velit ut lectu
 Sed malesuada, eros at lacinia imperdiet, nunc diam congue magna, vel dapibus tellus massa ut turpis. Suspendisse fringilla nisl a dictum consequat. Nunc cursus, ligula at vulputate sagittis, nulla risus elementum lorem, ac finibus magna metus a lorem. Sed cursus, nibh tempus volutpat sodales, libero lacus pellentesque enim, nec condimentum tellus ante sed turpis. Vestibulum nibh diam, aliquam eget nisi faucibus, placerat ultrices nisi. Nulla molestie maximus ipsum, et commodo mauris tristique sed. Donec laoreet est nisl, id malesuada diam interdum fringilla.
 
 Donec porttitor nisi eget arcu sollicitudin consequat. Morbi suscipit magna sem, ac maximus tortor pellentesque eu. Nulla lacinia, diam faucibus facilisis ultrices, nisi est aliquam arcu, non iaculis est mauris non felis. Nunc et velit massa. Nulla nec purus nec nulla cursus dictum eget in eros. Etiam elit libero, lobortis eu tincidunt commodo, bibendum et dui. Donec pretium a purus at eleifend. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur vestibulum, diam nec porttitor varius, turpis sem rhoncus ex, quis malesuada ex est non tellus. Vestibulum dictum quam laoreet lectus blandit, vel tincidunt lectus ornare.
-"""
+""" * 2

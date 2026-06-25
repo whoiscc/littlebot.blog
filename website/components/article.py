@@ -26,7 +26,7 @@ def transpile(content):
             else:
                 assert indent >= indent_level
                 line = " " * (indent - indent_level) + line
-            source.append(f'"{line}",')
+            source.append(f"{line!r},")
     source.append("]")
     return "\n".join(source)
 

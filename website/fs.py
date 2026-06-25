@@ -92,14 +92,28 @@ def build():
         print(f"  -> {target_path}")
     print()
 
+    def run_pages(files):
+        for file in files:
+            print(file)
+            run(f"uv run {file}", shell=True, check=True)
+        print()
+
     print("PHASE article")
     (build_dir / '.state' / 'articles').mkdir()
-    for file in glob("pages/articles/*.py", recursive=True):
-        print(file)
-        run(f"uv run {file}", shell=True, check=True)
-    print()
+    run_pages(glob("pages/articles/*.py"))
 
-    print("PHASE summary")
-    for file in glob("pages/*.py", recursive=True):
-        print(file)
-        run(f"uv run {file}", shell=True, check=True)
+    # The flat pages/*.py scripts split across the final two phases by input
+    # scope. `collection` pages consume article metadata -- the sitemap today,
+    # tag/category/year-archive listings later. `site` pages read the whole
+    # built site (e.g. index.py's connectivity list over every page), so they
+    # must run last. New drop-in pages default to collection; only site-level
+    # pages need adding to the set below.
+    pages = glob("pages/*.py")
+    site_pages = {"pages/index.py"}
+    assert site_pages <= set(pages), f"site_pages not found: {site_pages - set(pages)}"
+
+    print("PHASE collection")
+    run_pages(f for f in pages if f not in site_pages)
+
+    print("PHASE site")
+    run_pages(site_pages)
