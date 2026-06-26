@@ -29,14 +29,24 @@ def _file_hash(path: Path) -> str:
     return sha256(path.read_bytes()).hexdigest()
 
 
+def _info(ots_path: Path) -> str:
+    """`ots info` output -- local, no network."""
+    return run(["ots", "info", str(ots_path)], stdout=PIPE, stderr=PIPE, text=True).stdout
+
+
 def _embedded_hash(ots_path: Path) -> str | None:
-    """The SHA256 the proof certifies, parsed from `ots info` (local, no network)."""
-    result = run(["ots", "info", str(ots_path)], stdout=PIPE, stderr=PIPE, text=True)
-    for line in result.stdout.splitlines():
+    """The SHA256 the proof certifies, parsed from `ots info`."""
+    for line in _info(ots_path).splitlines():
         line = line.strip()
         if line.startswith("File sha256 hash:"):
             return line.split(":", 1)[1].strip()
     return None
+
+
+def _is_complete(ots_path: Path) -> bool:
+    """True once the proof carries a Bitcoin attestation -- then it never needs
+    upgrading again, and we can tell offline without hitting a calendar."""
+    return "BitcoinBlockHeaderAttestation" in _info(ots_path)
 
 
 def stamp_articles(pattern: str = ARTICLES_GLOB) -> None:
@@ -69,6 +79,9 @@ def upgrade_articles(pattern: str = ARTICLES_GLOB) -> None:
         ots = Path(file).with_name(Path(file).name + ".ots")
         if not ots.exists():
             continue
+        if _is_complete(ots):  # already anchored to Bitcoin -- skip the network call
+            print(f"  {ots}: complete")
+            continue
         result = run(["ots", "upgrade", str(ots)], stdout=PIPE, stderr=PIPE, text=True)
         message = (result.stdout + result.stderr).strip().splitlines()
         print(f"  {ots}: {message[-1] if message else 'no output'}")
@@ -77,10 +90,21 @@ def upgrade_articles(pattern: str = ARTICLES_GLOB) -> None:
     print()
 
 
-def main() -> None:
-    stamp_articles()
-    upgrade_articles()
+def main(argv: list[str] | None = None) -> None:
+    """`timestamp.py [stamp|upgrade]` -- default runs both.
+
+    Deploys run `stamp` only: it's cheap (local hash checks, network only for
+    genuinely new/changed articles) and wants to happen promptly. `upgrade` is
+    slow (a network round-trip per proof) and not time-sensitive -- fresh proofs
+    can't upgrade for hours anyway -- so run it occasionally, not on every deploy."""
+    phase = (argv or [None])[0]
+    if phase in (None, "stamp"):
+        stamp_articles()
+    if phase in (None, "upgrade"):
+        upgrade_articles()
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+
+    main(sys.argv[1:])
