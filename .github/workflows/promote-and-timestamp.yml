@@ -1,0 +1,62 @@
+name: promote-and-timestamp
+
+# Dual-branch timestamps.
+#   main   (source)  : human-only, timestamp-free.
+#   deploy (this job): bot-only, carries the .ots proofs, watched by Cloudflare Pages.
+# On a push to main (or daily, or manually) this job merges main into deploy, runs the
+# OpenTimestamps pass, and pushes deploy exactly ONCE (merge + proof commit together) so
+# Cloudflare builds a single time with the proofs already present.
+
+on:
+  push:
+    branches: [main]           # source branch (human-only, timestamp-free)
+  schedule:
+    - cron: '23 4 * * *'       # daily ~04:23 UTC: upgrade pending proofs (+ catch-up merge)
+  workflow_dispatch: {}        # manual promote / first run
+
+permissions:
+  contents: write              # merge + push the deploy branch
+
+concurrency:
+  group: deploy-pipeline       # serialize promotes and the daily run (no push races)
+  cancel-in-progress: false
+
+jobs:
+  promote-and-timestamp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: deploy          # operate on the Cloudflare-watched branch
+          fetch-depth: 0       # full history so the merge has a base
+
+      - name: Bot identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # Conflict-free by construction: main carries content only, deploy carries .ots only.
+      - name: Merge source into deploy
+        run: |
+          git fetch origin main
+          git merge --no-ff --no-edit origin/main
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      # stamp new / restamp changed / upgrade pending -- one pass over the merged tree.
+      # `uv run` supplies Python 3.13 + the `ots` CLI (opentimestamps-client) on PATH.
+      - run: uv run timestamp.py
+
+      - name: Commit proofs (if any) and push deploy ONCE
+        run: |
+          # status --porcelain (not diff): catches BRAND-NEW untracked *.ots too.
+          if [ -n "$(git status --porcelain -- '*.ots')" ]; then
+            git add -- '*.ots'
+            # No [skip ci]: Cloudflare SHOULD build so pages pick up the proof links.
+            git commit -m "chore(timestamps): stamp/upgrade article proofs"
+          fi
+          # One push carries the merge (content) + any proof commit -> Cloudflare builds once.
+          # No-op when nothing advanced (quiet daily run) -> no build.
+          git push origin HEAD:deploy
