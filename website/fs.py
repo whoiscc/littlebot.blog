@@ -95,7 +95,7 @@ def build():
     def run_pages(files):
         for file in files:
             print(file)
-            run(f"uv run {file}", shell=True, check=True)
+            run(f"python3 {file}", shell=True, check=True)
         print()
 
     print("PHASE article")
