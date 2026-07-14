@@ -1,5 +1,6 @@
 from website import render
 from website.components.article import Paragraph
+from website.components.footer import article_footer
 from website.fs import asset_url
 from website.render import RenderLines
 
@@ -40,6 +41,7 @@ class Page:
                     """</div>""",
                 ),
                 """</article>""",
+                article_footer(),
             ),
             epilogue_items=[
                 f"""<script src="{asset_url('prism.js')}"></script>""",
